@@ -26,29 +26,29 @@ export const writing_overview_rows = [
 ].sort((a, b) => b.word_count - a.word_count);
 
 export const engagement_metrics = [
-    { id: 1, submission_count: 3, time_spent_min: 40 },
-    { id: 2, submission_count: 8, time_spent_min: 90 },
-    { id: 3, submission_count: 10, time_spent_min: 20 },
-    { id: 4, submission_count: 12, time_spent_min: 95 },
-    { id: 5, submission_count: 14, time_spent_min: 150 },
-    { id: 6, submission_count: 18, time_spent_min: 180 },
-    { id: 7, submission_count: 21, time_spent_min: 125 },
-    { id: 8, submission_count: 21, time_spent_min: 155 },
-    { id: 9, submission_count: 25, time_spent_min: 15 },
-    { id: 10, submission_count: 26, time_spent_min: 190 }
+    { id: 1, full_name: 'Julia', submission_count: 3, time_spent_min: 40 },
+    { id: 2, full_name: 'Evelin', submission_count: 8, time_spent_min: 90 },
+    { id: 3, full_name: 'Matis', submission_count: 10, time_spent_min: 20 },
+    { id: 4, full_name: 'Sofia', submission_count: 12, time_spent_min: 95 },
+    { id: 5, full_name: 'Hugo', submission_count: 14, time_spent_min: 150 },
+    { id: 6, full_name: 'Samuel', submission_count: 18, time_spent_min: 180 },
+    { id: 7, full_name: 'Clara', submission_count: 21, time_spent_min: 125 },
+    { id: 8, full_name: 'Irene', submission_count: 21, time_spent_min: 155 },
+    { id: 9, full_name: 'Andrés', submission_count: 25, time_spent_min: 15 },
+    { id: 10, full_name: 'Diego', submission_count: 26, time_spent_min: 190 }
 ];
 
 export const improvement_stats = [
-    { id: 101, resubmission_avg: 2, score_avg: 20 },
-    { id: 102, resubmission_avg: 2, score_avg: 25 },
-    { id: 103, resubmission_avg: 2, score_avg: 100 },
-    { id: 104, resubmission_avg: 3, score_avg: 40 },
-    { id: 105, resubmission_avg: 5, score_avg: 45 },
-    { id: 106, resubmission_avg: 5, score_avg: 100 },
-    { id: 107, resubmission_avg: 8, score_avg: 78 },
-    { id: 108, resubmission_avg: 8, score_avg: 88 },
-    { id: 109, resubmission_avg: 12, score_avg: 92 },
-    { id: 110, resubmission_avg: 14, score_avg: 100 }
+    { id: 101, full_name: 'Valeria', resubmission_avg: 2, score_avg: 20 },
+    { id: 102, full_name: 'Matías', resubmission_avg: 2, score_avg: 25 },
+    { id: 103, full_name: 'Daniel', resubmission_avg: 2, score_avg: 100 },
+    { id: 104, full_name: 'Carla', resubmission_avg: 3, score_avg: 40 },
+    { id: 105, full_name: 'Lucas', resubmission_avg: 5, score_avg: 45 },
+    { id: 106, full_name: 'Martin', resubmission_avg: 5, score_avg: 100 },
+    { id: 107, full_name: 'Freya', resubmission_avg: 8, score_avg: 78 },
+    { id: 108, full_name: 'Max', resubmission_avg: 8, score_avg: 88 },
+    { id: 109, full_name: 'Matis_S', resubmission_avg: 12, score_avg: 92 },
+    { id: 110, full_name: 'Julia', resubmission_avg: 14, score_avg: 100 }
 ];
 
 export const error_analysis_treemap = [

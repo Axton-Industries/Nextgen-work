@@ -6,16 +6,14 @@ import {
 import {
   Home, BookOpen, MessageSquare, LayoutGrid, CheckSquare,
   Bot, GraduationCap, Sparkles, Binary, Video, Headphones,
-  Search, X, Calendar, UserCircle
+  X, Calendar, UserCircle
 } from 'lucide-react';
 
 // Components
 import { IconButton } from './components/IconButton';
 import { StatCard } from './components/StatCard';
 import { FilterButton } from './components/FilterButton';
-import { CustomTooltip as CustomTreemapTooltip } from './components/CustomTooltip';
-import { WritingTooltip } from './components/WritingTooltip';
-import { GeneralChartTooltip } from './components/GeneralChartTooltip';
+import { DashboardTooltip } from './components/DashboardTooltip';
 
 // Data (Simulated Postgres Rows)
 import {
@@ -184,7 +182,7 @@ const App = () => {
                       tickLine={false}
                       tick={{ fill: '#4b5563', fontSize: 10, fontWeight: 500 }}
                     />
-                    <Tooltip content={<WritingTooltip />} cursor={{ fill: '#f3f4f6', opacity: 0.4 }} />
+                    <Tooltip content={<DashboardTooltip />} cursor={{ fill: '#f3f4f6', opacity: 0.4 }} />
                     <Bar dataKey="word_count" fill="#8b5cf6" radius={[0, 4, 4, 0]} barSize={5} />
                   </BarChart>
                 </ResponsiveContainer>
@@ -219,7 +217,7 @@ const App = () => {
                         tick={{ fontSize: 9, fill: '#9ca3af' }}
                         label={{ value: 'Time (min)', angle: -90, position: 'insideLeft', offset: 10, fontSize: 8, fill: '#9ca3af', fontWeight: 'bold' }}
                       />
-                      <Tooltip content={<GeneralChartTooltip />} />
+                      <Tooltip content={<DashboardTooltip />} />
                       <Scatter data={engagement_metrics} fill="#8b5cf6" />
                     </ScatterChart>
                   </ResponsiveContainer>
@@ -251,7 +249,7 @@ const App = () => {
                         tick={{ fontSize: 9, fill: '#9ca3af' }}
                         label={{ value: 'Score (%)', angle: -90, position: 'insideLeft', offset: 10, fontSize: 8, fill: '#9ca3af', fontWeight: 'bold' }}
                       />
-                      <Tooltip content={<GeneralChartTooltip />} />
+                      <Tooltip content={<DashboardTooltip />} />
                       <Scatter data={improvement_stats} fill="#8b5cf6" />
                     </ScatterChart>
                   </ResponsiveContainer>
@@ -289,11 +287,11 @@ const App = () => {
                           {q.question.length > 20 && q.diameter < 100 ? q.question.substring(0, 15) + '...' : q.question}
 
                           {/* Floating Tooltip */}
-                          <div className="absolute opacity-0 group-hover:opacity-100 transition-opacity bottom-full mb-3 left-1/2 -translate-x-1/2 bg-white p-3 border border-gray-200 shadow-xl rounded-xl text-[12px] z-[9999] pointer-events-none w-max max-w-[200px]">
-                            <p className="font-bold text-gray-800 mb-1.5 text-[13px] leading-tight">{q.question}</p>
+                          <div className="absolute opacity-0 group-hover:opacity-100 transition-opacity bottom-full mb-3 left-1/2 -translate-x-1/2 bg-white p-3 border border-gray-100 shadow-xl rounded-xl text-[12px] z-[9999] pointer-events-none w-max max-w-[200px] ring-1 ring-black/5">
+                            <p className="font-bold text-gray-800 mb-1.5 text-[13px] border-b border-gray-50 pb-1 leading-tight">{q.question}</p>
                             <div className="flex justify-between items-center gap-4">
-                              <span className="text-gray-500">Errors:</span>
-                              <span className="text-violet-600 font-bold">{q.errors}</span>
+                              <span className="text-gray-500 capitalize">Errors:</span>
+                              <span className="text-purple-600 font-bold font-mono">{q.errors}</span>
                             </div>
                             {/* Arrow */}
                             <div className="absolute top-full left-1/2 -translate-x-1/2 border-8 border-transparent border-t-white"></div>
@@ -348,7 +346,7 @@ const App = () => {
                         );
                       }}
                     >
-                      <Tooltip content={<CustomTreemapTooltip />} />
+                      <Tooltip content={<DashboardTooltip />} />
                     </Treemap>
                   </ResponsiveContainer>
                 </div>
