@@ -22,7 +22,7 @@ export const writing_overview_rows = [
     { student_id: 16, full_name: 'Martin', word_count: 325, last_submission: '2025-12-13' },
     { student_id: 17, full_name: 'Freya', word_count: 340, last_submission: '2025-12-12' },
     { student_id: 18, full_name: 'Max', word_count: 355, last_submission: '2025-12-11' },
-    { student_id: 19, full_name: 'Matis_2', word_count: 370, last_submission: '2025-12-10' },
+    { student_id: 19, full_name: 'Matis_S', word_count: 370, last_submission: '2025-12-10' },
 ].sort((a, b) => b.word_count - a.word_count);
 
 export const engagement_metrics = [
@@ -52,8 +52,24 @@ export const improvement_stats = [
 ];
 
 export const error_analysis_treemap = [
-    { word_id: 1001, word: 'Pingüino', occurrence_count: 400, severity_color: '#8b5cf6' },
-    { word_id: 1002, word: 'Frigorifico', occurrence_count: 300, severity_color: '#a78bfa' },
-    { word_id: 1003, word: 'Pelicula', occurrence_count: 150, severity_color: '#c4b5fd' },
-    { word_id: 1004, word: 'Coliflor', occurrence_count: 100, severity_color: '#ddd6fe' },
+    { word_id: 1001, word: 'Pingüino', occurrence_count: 400 },
+    { word_id: 1002, word: 'Frigorífico', occurrence_count: 300 },
+    { word_id: 1003, word: 'Película', occurrence_count: 150 },
+    { word_id: 1004, word: 'Coliflor', occurrence_count: 100 },
+];
+
+
+export const top_error_questions = [
+    { id: 201, question: "How old was Lucía?", errors: 54 },
+    { id: 202, question: "What happened in 1492?", errors: 48 },
+    { id: 203, question: "What's the capital of Spain?", errors: 30 },
+    { id: 204, question: "What's the nickname of...", errors: 25 },
+    { id: 205, question: "Who's Lucia's uncle?", errors: 38 }
+];
+
+export const summary_stats = [
+    { title: "Total Students", value: "20", subtext: "18 Active" },
+    { title: "App Time", value: "30min", subtext: "+5%" },
+    { title: "Avg Score", value: "80%", subtext: "+10%" },
+    { title: "Completion", value: "75%", subtext: "-8%" }
 ];
