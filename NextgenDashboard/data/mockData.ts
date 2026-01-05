@@ -73,3 +73,56 @@ export const summary_stats = [
     { title: "Avg Score", value: "80%", subtext: "+10%" },
     { title: "Completion", value: "75%", subtext: "-8%" }
 ];
+
+// Student Specific Data (Erik)
+export const erik_stats = [
+    { title: "Student Name", value: "Erik", subtext: "" },
+    { title: "Time spent on the app", value: "20min", subtext: "+5% from last week" },
+    { title: "Avg score in the assignments", value: "70%", subtext: "+10% from last week" },
+    { title: "Avg completion per assignment", value: "75%", subtext: "-8% from last week" }
+];
+
+export const erik_time_per_assignment = [
+    { name: 'Dictation: Médico...', erik: 45, class: 38 },
+    { name: 'Writing: Vacaciones...', erik: 40, class: 35 },
+    { name: 'Fill: Meses...', erik: 38, class: 30 },
+    { name: 'Read&Listen: Fiesta...', erik: 35, class: 32 },
+    { name: 'Video: Compras...', erik: 32, class: 28 },
+    { name: 'Vocabulary: Animales...', erik: 30, class: 25 },
+    { name: 'IA Chat: Estación...', erik: 28, class: 35 },
+    { name: 'Vocabulary: Ropa...', erik: 25, class: 22 },
+    { name: 'Video: Preparar la cena...', erik: 22, class: 30 },
+    { name: 'IA Chat: Mercado...', erik: 20, class: 28 },
+];
+
+export const erik_week_activity = [
+    { week: 21, erik: 5, avg: 18 },
+    { week: 22, erik: 8, avg: 25 },
+    { week: 23, erik: 12, avg: 23 },
+    { week: 24, erik: 15, avg: 25 },
+    { week: 25, erik: 18, avg: 15 },
+    { week: 26, erik: 22, avg: 18 },
+    { week: 27, erik: 25, avg: 20 },
+];
+
+export const erik_performance_trend = [
+    { week: 20, erik: 75, class: 45 },
+    { week: 21, erik: 65, class: 38 },
+    { week: 22, erik: 78, class: 40 },
+    { week: 23, erik: 78, class: 52 },
+    { week: 24, erik: 82, class: 48 },
+    { week: 25, erik: 40, class: 60 },
+    { week: 26, erik: 55, class: 48 },
+    { week: 27, erik: 72, class: 75 },
+    { week: 28, erik: 91, class: 64 },
+    { week: 29, erik: 91, class: 78 },
+    { week: 30, erik: 75, class: 73 },
+];
+
+export const erik_skills = [
+    { subject: 'Writing', erik: 10, avg: 7 },
+    { subject: 'Expression', erik: 8, avg: 5 },
+    { subject: 'Listening', erik: 6, avg: 8 },
+    { subject: 'Reading', erik: 9, avg: 6 },
+    { subject: 'Vocabulary', erik: 7, avg: 4 },
+];

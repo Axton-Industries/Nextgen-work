@@ -15,7 +15,7 @@ export const DashboardTooltip = ({ active, payload, title }: any) => {
                     {payload.map((entry: any, index: number) => (
                         <div key={index} className="flex justify-between items-center gap-4">
                             <span className="text-gray-500 capitalize">
-                                {(entry.name || 'Value').replace(/_/g, ' ')}:
+                                {(entry.name || 'Errors').replace(/_/g, ' ')}:
                             </span>
                             <span
                                 className="font-bold font-mono text-purple-600"
