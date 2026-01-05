@@ -36,29 +36,35 @@ const App = () => {
   const isStudentView = searchValue.toLowerCase().includes('erik');
   const activeStats = isStudentView ? erik_stats : summary_stats;
 
-  // Professional Purple-themed Palette
-  const PURPLE_PALETTE = ['#7c3aed', '#a78bfa', '#c4b5fd', '#ddd6fe', '#ede9fe', '#f5f3ff'];
+  // Professional High-Contrast Palette (Lighter Intensity Scale)
+  const INTENSITY_PALETTE = ['#7c3aed', '#8b5cf6', '#a78bfa', '#c4b5fd', '#ddd6fe', '#ede9fe'];
 
-  const dataWithColors = error_analysis_treemap.map((item, index) => ({
-    ...item,
-    fill: PURPLE_PALETTE[index % PURPLE_PALETTE.length]
-  }));
+  const dataWithColors = useMemo(() => {
+    return [...error_analysis_treemap]
+      .sort((a, b) => b.occurrence_count - a.occurrence_count)
+      .map((item, index) => ({
+        ...item,
+        fill: INTENSITY_PALETTE[Math.min(index, INTENSITY_PALETTE.length - 1)]
+      }));
+  }, []);
 
   // Automatic Bubble Layout Calculation
   const layoutBubbles = useMemo(() => {
-    // 1. Prepare items with dimensions
-    const items = top_error_questions.map((q, index) => {
-      // Scale down slightly: errors * 1.5 + 15
-      const diameter = q.errors * 1.8 + 20;
-      return {
-        ...q,
-        radius: diameter / 2,
-        diameter,
-        color: PURPLE_PALETTE[(index + 1) % PURPLE_PALETTE.length],
-        x: 0,
-        y: 0
-      };
-    }).sort((a, b) => b.radius - a.radius); // Place largest first
+    // 1. Prepare items with dimensions and value-based colors
+    const items = [...top_error_questions]
+      .sort((a, b) => b.errors - a.errors)
+      .map((q, index) => {
+        // Scale down slightly: errors * 1.5 + 15
+        const diameter = q.errors * 1.8 + 20;
+        return {
+          ...q,
+          radius: diameter / 2,
+          diameter,
+          color: INTENSITY_PALETTE[Math.min(index, INTENSITY_PALETTE.length - 1)],
+          x: 0,
+          y: 0
+        };
+      });
 
     // 2. Simple Spiral Packing
     const placed = [] as typeof items;
@@ -179,13 +185,13 @@ const App = () => {
                   <h3 className="font-bold text-gray-800 mb-2 text-[10px] uppercase tracking-wider">Time spent per assignment</h3>
                   <div className="flex-1 min-h-0">
                     <ResponsiveContainer width="100%" height="100%">
-                      <BarChart data={erik_time_per_assignment} layout="vertical" margin={{ left: -15, right: 30, top: 10, bottom: 20 }}>
-                        <XAxis type="number" tick={{ fontSize: 9 }} axisLine={false} tickLine={false} />
-                        <YAxis dataKey="name" type="category" width={100} tick={{ fontSize: 9 }} axisLine={false} tickLine={false} />
+                      <BarChart data={erik_time_per_assignment} layout="vertical" margin={{ left: 10, right: 0, top: 10, bottom: 10 }} barCategoryGap="65%">
+                        <XAxis type="number" tick={{ fontSize: 9, fill: '#000000' }} axisLine={{ stroke: '#e2e8f0' }} tickLine={false} label={{ value: 'Minutes', position: 'insideBottom', offset: 0, fontSize: 8, fill: '#000', fontWeight: 'bold' }} />
+                        <YAxis dataKey="name" type="category" width={90} tick={{ fontSize: 10, fill: '#000000' }} axisLine={{ stroke: '#e2e8f0' }} tickLine={false} />
                         <Tooltip content={<DashboardTooltip />} />
                         <Legend iconType="circle" wrapperStyle={{ fontSize: '10px', paddingTop: '10px' }} />
-                        <Bar name="Erik Time" dataKey="erik" fill="#7c3aed" radius={[10, 10, 10, 10]} barSize={10} />
-                        <Bar name="Class Avg." dataKey="class" fill="#ede9fe" radius={[10, 10, 10, 10]} barSize={10} />
+                        <Bar name="Erik Time" dataKey="erik" fill="#7c3aed" radius={[10, 10, 10, 10]} barSize={6} />
+                        <Bar name="Class Avg." dataKey="class" fill="#94a3b8" radius={[10, 10, 10, 10]} barSize={6} />
                       </BarChart>
                     </ResponsiveContainer>
                   </div>
@@ -199,13 +205,14 @@ const App = () => {
                     <h3 className="font-bold text-gray-800 mb-2 text-[10px] uppercase tracking-wider">Total Week activity - Erik</h3>
                     <div className="flex-1">
                       <ResponsiveContainer width="100%" height="100%">
-                        <LineChart data={erik_week_activity} margin={{ top: 10, right: 10, bottom: 0, left: -20 }}>
-                          <XAxis dataKey="week" tick={{ fontSize: 9 }} axisLine={false} tickLine={false} />
-                          <YAxis tick={{ fontSize: 9 }} axisLine={false} tickLine={false} />
+                        <LineChart data={erik_week_activity} margin={{ top: 5, right: 10, bottom: 15, left: 5 }}>
+                          <CartesianGrid strokeDasharray="3 3" stroke="#f1f5f9" />
+                          <XAxis dataKey="week" tick={{ fontSize: 9, fill: '#9ca3af' }} axisLine={false} tickLine={false} label={{ value: 'Week', position: 'insideBottom', offset: -10, fontSize: 8, fill: '#9ca3af', fontWeight: 'bold' }} />
+                          <YAxis tick={{ fontSize: 9, fill: '#9ca3af' }} axisLine={false} tickLine={false} label={{ value: 'Min', angle: -90, position: 'insideLeft', offset: 12, fontSize: 8, fill: '#9ca3af', fontWeight: 'bold' }} />
                           <Tooltip content={<DashboardTooltip />} />
-                          <Legend iconType="circle" wrapperStyle={{ fontSize: '10px' }} />
-                          <Line name="Erik" type="monotone" dataKey="erik" stroke="#7c3aed" strokeWidth={2.5} dot={{ r: 4, fill: '#7c3aed', strokeWidth: 2 }} activeDot={{ r: 6 }} />
-                          <Line name="Avg. Minutes" type="monotone" dataKey="avg" stroke="#ddd6fe" strokeWidth={2} dot={{ r: 4, fill: '#fff', stroke: '#ddd6fe', strokeWidth: 2 }} />
+                          <Legend verticalAlign="top" align="right" iconType="circle" wrapperStyle={{ fontSize: '9px', paddingBottom: '10px' }} />
+                          <Line name="Erik" type="monotone" dataKey="erik" stroke="#7c3aed" strokeWidth={3} dot={{ r: 4, fill: '#7c3aed', strokeWidth: 2 }} activeDot={{ r: 6 }} />
+                          <Line name="Avg. Minutes" type="monotone" dataKey="avg" stroke="#475569" strokeWidth={2} strokeDasharray="5 5" dot={{ r: 4, fill: '#fff', stroke: '#475569', strokeWidth: 2 }} />
                         </LineChart>
                       </ResponsiveContainer>
                     </div>
@@ -216,13 +223,14 @@ const App = () => {
                     <h3 className="font-bold text-gray-800 mb-2 text-[10px] uppercase tracking-wider">Performance Trend</h3>
                     <div className="flex-1">
                       <ResponsiveContainer width="100%" height="100%">
-                        <LineChart data={erik_performance_trend} margin={{ top: 10, right: 10, bottom: 0, left: -20 }}>
-                          <XAxis dataKey="week" tick={{ fontSize: 9 }} axisLine={false} tickLine={false} />
-                          <YAxis tick={{ fontSize: 9 }} axisLine={false} tickLine={false} />
+                        <LineChart data={erik_performance_trend} margin={{ top: 5, right: 10, bottom: 15, left: 5 }}>
+                          <CartesianGrid strokeDasharray="3 3" stroke="#f1f5f9" />
+                          <XAxis dataKey="week" tick={{ fontSize: 9, fill: '#9ca3af' }} axisLine={false} tickLine={false} label={{ value: 'Week', position: 'insideBottom', offset: -10, fontSize: 8, fill: '#9ca3af', fontWeight: 'bold' }} />
+                          <YAxis tick={{ fontSize: 9, fill: '#9ca3af' }} axisLine={false} tickLine={false} label={{ value: 'Score %', angle: -90, position: 'insideLeft', offset: 12, fontSize: 8, fill: '#9ca3af', fontWeight: 'bold' }} />
                           <Tooltip content={<DashboardTooltip />} />
-                          <Legend iconType="circle" wrapperStyle={{ fontSize: '10px' }} />
-                          <Line name="Erik" type="monotone" dataKey="erik" stroke="#7c3aed" strokeWidth={2.5} dot={{ r: 4, fill: '#7c3aed', strokeWidth: 2 }} activeDot={{ r: 6 }} />
-                          <Line name="Class" type="monotone" dataKey="class" stroke="#ddd6fe" strokeWidth={2} dot={{ r: 4, fill: '#fff', stroke: '#ddd6fe', strokeWidth: 2 }} />
+                          <Legend verticalAlign="top" align="right" iconType="circle" wrapperStyle={{ fontSize: '9px', paddingBottom: '10px' }} />
+                          <Line name="Erik" type="monotone" dataKey="erik" stroke="#7c3aed" strokeWidth={3} dot={{ r: 4, fill: '#7c3aed', strokeWidth: 2 }} activeDot={{ r: 6 }} />
+                          <Line name="Class" type="monotone" dataKey="class" stroke="#475569" strokeWidth={2} strokeDasharray="5 5" dot={{ r: 4, fill: '#fff', stroke: '#475569', strokeWidth: 2 }} />
                         </LineChart>
                       </ResponsiveContainer>
                     </div>
@@ -233,13 +241,13 @@ const App = () => {
                     <h3 className="font-bold text-gray-800 mb-2 text-[10px] uppercase tracking-wider">Erik skills level</h3>
                     <div className="flex-1">
                       <ResponsiveContainer width="100%" height="100%">
-                        <RadarChart cx="50%" cy="50%" outerRadius="70%" data={erik_skills}>
+                        <RadarChart cx="50%" cy="50%" outerRadius="100%" data={erik_skills}>
                           <PolarGrid stroke="#f1f5f9" />
-                          <PolarAngleAxis dataKey="subject" tick={{ fontSize: 10, fill: '#64748b' }} />
+                          <PolarAngleAxis dataKey="subject" tick={{ fontSize: 10, fill: '#000000' }} />
                           <PolarRadiusAxis angle={30} domain={[0, 10]} tick={false} axisLine={false} />
                           <Radar name="Erik" dataKey="erik" stroke="#7c3aed" fill="#7c3aed" fillOpacity={0.4} />
-                          <Radar name="Class Avg." dataKey="avg" stroke="#ddd6fe" fill="#ddd6fe" fillOpacity={0.1} />
-                          <Legend wrapperStyle={{ fontSize: '10px' }} />
+                          <Radar name="Class Avg." dataKey="avg" stroke="#475569" fill="#475569" fillOpacity={0.25} />
+                          <Legend verticalAlign="top" align="right" wrapperStyle={{ fontSize: '10px', paddingTop: '10px' }} />
                           <Tooltip content={<DashboardTooltip />} />
                         </RadarChart>
                       </ResponsiveContainer>
@@ -254,15 +262,13 @@ const App = () => {
                         <Treemap
                           data={dataWithColors}
                           dataKey="occurrence_count"
-                          aspectRatio={4 / 3}
-                          stroke="#fff"
                           content={(props: any) => {
                             const { x, y, width, height, word, fill } = props;
                             return (
                               <g>
                                 <rect x={x} y={y} width={width} height={height} style={{ fill, stroke: '#fff', strokeWidth: 2 }} />
                                 {width > 30 && height > 20 && (
-                                  <text x={x + width / 2} y={y + height / 2} textAnchor="middle" dominantBaseline="middle" fill="#fff" fontSize={9} fontWeight="bold">
+                                  <text x={x + width / 2} y={y + height / 2} textAnchor="middle" dominantBaseline="middle" fill="#000000" fontSize={12} fontWeight="bold">
                                     {word}
                                   </text>
                                 )}
@@ -382,9 +388,6 @@ const App = () => {
                       {/* Center anchor point */}
                       <div className="relative w-0 h-0">
                         {layoutBubbles.map((q) => {
-                          const isDark = q.color === '#8b5cf6' || q.color === '#7c3aed';
-                          const textColor = isDark ? '#ffffff' : '#1f2937';
-
                           return (
                             <div
                               key={q.id}
@@ -396,7 +399,7 @@ const App = () => {
                                 top: q.y,
                                 width: `${q.diameter}px`,
                                 height: `${q.diameter}px`,
-                                color: textColor,
+                                color: '#000000',
                                 // Center the bubble on its coord
                                 transform: 'translate(-50%, -50%)',
                                 fontSize: q.diameter > 100 ? '10px' : q.diameter > 60 ? '8px' : '7px'
@@ -430,15 +433,13 @@ const App = () => {
                         <Treemap
                           data={dataWithColors}
                           dataKey="occurrence_count"
-                          aspectRatio={4 / 3}
-                          stroke="#fff"
                           content={(props: any) => {
                             const { x, y, width, height, word, fill } = props;
                             return (
                               <g>
-                                <rect x={x} y={y} width={width} height={height} style={{ fill, stroke: '#fff', strokeWidth: 2 }} />
+                                <rect x={x} y={y} width={width} height={height} style={{ fill, stroke: '#ffffffff', strokeWidth: 2 }} />
                                 {width > 30 && height > 20 && (
-                                  <text x={x + width / 2} y={y + height / 2} textAnchor="middle" dominantBaseline="middle" fill="#000" fontSize={9} fontWeight="bold">
+                                  <text x={x + width / 2} y={y + height / 2} textAnchor="middle" dominantBaseline="middle" fill="#000" fontSize={12} fontWeight="bold">
                                     {word}
                                   </text>
                                 )}
@@ -456,8 +457,8 @@ const App = () => {
             )}
           </div>
         </div>
-      </main>
-    </div>
+      </main >
+    </div >
   );
 };
 
