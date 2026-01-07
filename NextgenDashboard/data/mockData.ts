@@ -1,8 +1,3 @@
-/**
- * Mock data structured as if it were retrieved from a PostgreSQL database.
- * Uses snake_case for keys and includes unique identifiers.
- */
-
 export const writing_overview_rows = [
     { student_id: 1, full_name: 'Julia', word_count: 180, last_submission: '2025-12-28' },
     { student_id: 2, full_name: 'Evelin', word_count: 195, last_submission: '2025-12-27' },
@@ -24,6 +19,29 @@ export const writing_overview_rows = [
     { student_id: 18, full_name: 'Max', word_count: 355, last_submission: '2025-12-11' },
     { student_id: 19, full_name: 'Matis_S', word_count: 370, last_submission: '2025-12-10' },
 ].sort((a, b) => b.word_count - a.word_count);
+
+export const students = [
+    { id: 1, full_name: 'Julia', active: true },
+    { id: 2, full_name: 'Evelin', active: true },
+    { id: 3, full_name: 'Matis', active: true },
+    { id: 4, full_name: 'Sofia', active: true },
+    { id: 5, full_name: 'Hugo', active: true },
+    { id: 6, full_name: 'Samuel', active: true },
+    { id: 7, full_name: 'Clara', active: true },
+    { id: 8, full_name: 'Irene', active: true },
+    { id: 9, full_name: 'Andrés', active: true },
+    { id: 10, full_name: 'Diego', active: true },
+    { id: 11, full_name: 'Valeria', active: true },
+    { id: 12, full_name: 'Matías', active: true },
+    { id: 13, full_name: 'Daniel', active: true },
+    { id: 14, full_name: 'Carla', active: true },
+    { id: 15, full_name: 'Lucas', active: true },
+    { id: 16, full_name: 'Martin', active: true },
+    { id: 17, full_name: 'Freya', active: true },
+    { id: 18, full_name: 'Max', active: false },
+    { id: 19, full_name: 'Matis_S', active: false },
+    { id: 20, full_name: 'Erik', active: true },
+];
 
 export const engagement_metrics = [
     { id: 1, full_name: 'Julia', submission_count: 3, time_spent_min: 40 },
