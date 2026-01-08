@@ -102,7 +102,7 @@ const App = () => {
       skills: erik_skills
     };
 
-    // Deterministic variation for other students
+    // Deterministic variation for other students so that I don't have to generate data for each indiv
     const filterSeed = FILTER_OPTIONS.indexOf(timeFilter) !== -1
       ? FILTER_OPTIONS.indexOf(timeFilter)
       : timeFilter.length;
