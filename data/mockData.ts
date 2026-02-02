@@ -1,4 +1,18 @@
-export const writing_overview_rows = [
+import type {
+    WritingOverview,
+    Student,
+    EngagementMetric,
+    ImprovementStat,
+    ErrorAnalysis,
+    ErrorQuestion,
+    StatCardData,
+    TimePerAssignment,
+    WeekActivity,
+    PerformanceTrend,
+    SkillLevel
+} from '../src/types';
+
+export const writing_overview_rows: WritingOverview[] = [
     { student_id: 1, full_name: 'Julia', word_count: 180, last_submission: '2025-12-28' },
     { student_id: 2, full_name: 'Evelin', word_count: 195, last_submission: '2025-12-27' },
     { student_id: 3, full_name: 'Matis', word_count: 205, last_submission: '2025-12-26' },
@@ -20,7 +34,7 @@ export const writing_overview_rows = [
     { student_id: 19, full_name: 'Matis_S', word_count: 370, last_submission: '2025-12-10' },
 ].sort((a, b) => b.word_count - a.word_count);
 
-export const students = [
+export const students: Student[] = [
     { id: 1, full_name: 'Julia', active: true },
     { id: 2, full_name: 'Evelin', active: true },
     { id: 3, full_name: 'Matis', active: true },
@@ -43,7 +57,7 @@ export const students = [
     { id: 20, full_name: 'Erik', active: true },
 ];
 
-export const engagement_metrics = [
+export const engagement_metrics: EngagementMetric[] = [
     { id: 1, full_name: 'Julia', submission_count: 3, time_spent_min: 40 },
     { id: 2, full_name: 'Evelin', submission_count: 8, time_spent_min: 90 },
     { id: 3, full_name: 'Matis', submission_count: 10, time_spent_min: 20 },
@@ -56,7 +70,7 @@ export const engagement_metrics = [
     { id: 10, full_name: 'Diego', submission_count: 26, time_spent_min: 190 }
 ];
 
-export const improvement_stats = [
+export const improvement_stats: ImprovementStat[] = [
     { id: 101, full_name: 'Valeria', resubmission_avg: 2, score_avg: 20 },
     { id: 102, full_name: 'Matías', resubmission_avg: 2, score_avg: 25 },
     { id: 103, full_name: 'Daniel', resubmission_avg: 2, score_avg: 100 },
@@ -69,7 +83,7 @@ export const improvement_stats = [
     { id: 110, full_name: 'Julia', resubmission_avg: 14, score_avg: 100 }
 ];
 
-export const error_analysis_treemap = [
+export const error_analysis_treemap: ErrorAnalysis[] = [
     { word_id: 1001, word: 'Pingüino', occurrence_count: 400 },
     { word_id: 1002, word: 'Frigorífico', occurrence_count: 300 },
     { word_id: 1003, word: 'Película', occurrence_count: 150 },
@@ -77,7 +91,7 @@ export const error_analysis_treemap = [
 ];
 
 
-export const top_error_questions = [
+export const top_error_questions: ErrorQuestion[] = [
     { id: 201, question: "How old was Lucía?", errors: 54 },
     { id: 202, question: "What happened in 1492?", errors: 48 },
     { id: 203, question: "What's the capital of Spain?", errors: 30 },
@@ -85,7 +99,7 @@ export const top_error_questions = [
     { id: 205, question: "Who's Lucia's uncle?", errors: 38 }
 ];
 
-export const summary_stats = [
+export const summary_stats: StatCardData[] = [
     { title: "Total Students", value: "20", subtext: "18 Active" },
     { title: "App Time", value: "30min", subtext: "+5%" },
     { title: "Avg Score", value: "80%", subtext: "+10%" },
@@ -93,14 +107,14 @@ export const summary_stats = [
 ];
 
 // Student Specific Data (Erik)
-export const erik_stats = [
+export const erik_stats: StatCardData[] = [
     { title: "Student Name", value: "Erik", subtext: "" },
     { title: "Time spent on the app", value: "20min", subtext: "+5% from last week" },
     { title: "Avg score in the assignments", value: "70%", subtext: "+10% from last week" },
     { title: "Avg completion per assignment", value: "75%", subtext: "-8% from last week" }
 ];
 
-export const erik_time_per_assignment = [
+export const erik_time_per_assignment: TimePerAssignment[] = [
     { name: 'Dictation: Médico...', erik: 45, class: 38 },
     { name: 'Writing: Vacaciones...', erik: 40, class: 35 },
     { name: 'Fill: Meses...', erik: 38, class: 30 },
@@ -113,7 +127,7 @@ export const erik_time_per_assignment = [
     { name: 'IA Chat: Mercado...', erik: 20, class: 28 },
 ];
 
-export const erik_week_activity = [
+export const erik_week_activity: WeekActivity[] = [
     { week: 21, erik: 5, avg: 18 },
     { week: 22, erik: 8, avg: 25 },
     { week: 23, erik: 12, avg: 23 },
@@ -123,7 +137,7 @@ export const erik_week_activity = [
     { week: 27, erik: 25, avg: 20 },
 ];
 
-export const erik_performance_trend = [
+export const erik_performance_trend: PerformanceTrend[] = [
     { week: 20, erik: 75, class: 45 },
     { week: 21, erik: 65, class: 38 },
     { week: 22, erik: 78, class: 40 },
@@ -137,7 +151,7 @@ export const erik_performance_trend = [
     { week: 30, erik: 75, class: 73 },
 ];
 
-export const erik_skills = [
+export const erik_skills: SkillLevel[] = [
     { subject: 'Writing', erik: 10, avg: 7 },
     { subject: 'Expression', erik: 8, avg: 5 },
     { subject: 'Listening', erik: 6, avg: 8 },
