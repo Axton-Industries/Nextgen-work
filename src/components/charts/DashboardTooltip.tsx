@@ -23,7 +23,7 @@ export const DashboardTooltip = ({ active, payload, title }: any) => {
                             </span>
                             <span
                                 className="font-bold font-mono"
-                                style={{ color: entry.color || entry.fill || 'var(--primary)' }}
+                                style={{ color: entry.color || entry.fill || 'var(--color-primary)' }}
                             >
                                 {entry.value}
                             </span>

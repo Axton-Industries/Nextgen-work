@@ -1,3 +1,13 @@
+/**
+ * Main Application Component
+ * 
+ * This is the root component of the NextgenDashboard. It orchestrates:
+ * 1. State management via custom hooks (Searching, Filtering, Student Selection)
+ * 2. Data processing for charts (via useChartData)
+ * 3. Conditional rendering between the Overview and Individual Student views
+ */
+
+// UI Component Imports
 import { Sidebar } from './components/layout/Sidebar';
 import { DashboardHeader } from './components/layout/DashboardHeader';
 import { StudentCharts } from './components/charts/StudentCharts';
@@ -5,14 +15,12 @@ import { OverviewCharts } from './components/charts/OverviewCharts';
 import { StudentModal } from './components/modals/StudentModal';
 import { StatCard } from './components/cards/StatCard';
 
-// Hooks
+// State Management & Data Processing Hooks
 import { useStudentSearch, useTimeFilter, useStudentSelection } from './hooks/useDashboard';
 import { useChartData } from './hooks/useChartData';
 
-// Constants
+// Static Data & Configuration
 import { FILTER_OPTIONS, MONTHS } from './constants';
-
-// Data
 import {
   writing_overview_rows,
   engagement_metrics,
@@ -28,12 +36,23 @@ import {
 } from '../data/mockData';
 
 const App = () => {
-  // Custom hooks for state management
+  /** 
+   * STATE INITIALIZATION 
+   */
+
+  // Handles the global student search functionality
   const searchState = useStudentSearch(students);
+
+  // Manages time-based filtering (Presets, Custom Ranges etc.)
   const timeFilterState = useTimeFilter();
+
+  // Tracks which student is currently being viewed (null = overview)
   const studentState = useStudentSelection();
 
-  // Chart data processing
+  /** 
+   * DATA PROCESSING 
+   * Transforms raw mock data into chart-ready formats based on active filters
+   */
   const chartData = useChartData({
     selectedStudent: studentState.selectedStudent,
     timeFilter: timeFilterState.timeFilter,
@@ -50,10 +69,18 @@ const App = () => {
   });
 
   return (
+    /** 
+     * MAIN LAYOUT CONTAINER
+     * - h-screen: Full viewport height
+     * - overflow-hidden: Prevents window scrolling as we use internal scroll areas
+     */
     <div className="h-screen bg-muted/30 flex font-sans text-foreground overflow-hidden">
+
+      {/* Persistant Navigation Sidebar */}
       <Sidebar />
 
       <main className="flex-1 flex flex-col">
+        {/* Top Control Bar: Search, Filters, and Navigation */}
         <DashboardHeader
           isStudentView={studentState.isStudentView}
           onBackToOverview={() => studentState.setSelectedStudent(null)}
@@ -81,13 +108,16 @@ const App = () => {
           CURRENT_WEEKS={chartData.currentWeeks}
         />
 
+        {/* Primary Content Area */}
         <div className="px-4 py-3 space-y-3 max-w-[1700px] mx-auto w-full flex-1 flex flex-col overflow-hidden">
-          {/* Stats Cards */}
+
+          {/* Top Row: Key Performance Indicators (KPIs) */}
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 flex-shrink-0">
             {chartData.activeStats.map((stat, idx) => (
               <StatCard
                 key={idx}
                 {...stat}
+                // If the user clicks the "Total Students" or student name card, open the selector modal
                 onClick={
                   (stat.title === "Total Students" || stat.title === "Student Name")
                     ? () => studentState.setIsStudentModalOpen(true)
@@ -97,9 +127,11 @@ const App = () => {
             ))}
           </div>
 
-          {/* Charts */}
+          {/* Bottom Row: Detailed Visualizations */}
           <div className="grid grid-cols-12 gap-4 flex-1 min-h-0">
+            {/* Conditional Rendering between Views */}
             {studentState.isStudentView ? (
+              // Individual Student Deep Dive
               <StudentCharts
                 studentCharts={chartData.studentCharts}
                 displayedStudentName={studentState.selectedStudent}
@@ -110,6 +142,7 @@ const App = () => {
                 erik_skills={erik_skills}
               />
             ) : (
+              // Class-wide General Overview
               <OverviewCharts
                 writing_overview_rows={writing_overview_rows}
                 engagement_metrics={engagement_metrics}
@@ -122,6 +155,7 @@ const App = () => {
         </div>
       </main>
 
+      {/* Popups & Overlays */}
       <StudentModal
         isOpen={studentState.isStudentModalOpen}
         onOpenChange={studentState.setIsStudentModalOpen}

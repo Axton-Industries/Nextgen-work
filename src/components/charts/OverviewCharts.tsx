@@ -1,3 +1,9 @@
+/**
+ * OverviewCharts Component
+ * Displays class-wide metrics including writing volume, engagement levels, 
+ * improvement trends, and common errors.
+ */
+
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, ScatterChart, Scatter, Treemap } from 'recharts';
 import { Card } from "@/components/ui/card";
 import { DashboardTooltip } from './DashboardTooltip';
@@ -6,8 +12,8 @@ interface OverviewChartsProps {
     writing_overview_rows: any[];
     engagement_metrics: any[];
     improvement_stats: any[];
-    layoutBubbles: any[];
-    dataWithColors: any[];
+    layoutBubbles: any[]; // Position and size data for the "Top Error Questions" bubbles
+    dataWithColors: any[]; // Data with pre-assigned colors for the treemap
 }
 
 export const OverviewCharts = ({
@@ -18,7 +24,14 @@ export const OverviewCharts = ({
     dataWithColors
 }: OverviewChartsProps) => {
     return (
+        /**
+         * The Grid:
+         * Uses a 12-column layout. 
+         * Left column (col-span-3) for Writing Overview.
+         * Right side (col-span-9) for a 2x2 grid of specific metrics.
+         */
         <>
+            {/* 1. Writing Overview - Vertical Bar Chart */}
             <Card className="col-span-12 lg:col-span-3 p-2.5 shadow-md flex flex-col min-h-0">
                 <h3 className="font-bold text-muted-foreground mb-2 text-[10px] uppercase tracking-wider">Writing Overview</h3>
                 <div className="flex-1 min-h-0 text-[8px]">
@@ -42,13 +55,16 @@ export const OverviewCharts = ({
                                 className="text-foreground"
                             />
                             <Tooltip content={<DashboardTooltip />} cursor={{ fill: 'currentColor', opacity: 0.05 }} />
-                            <Bar dataKey="word_count" fill="var(--primary)" radius={[0, 4, 4, 0]} barSize={5} />
+                            {/* var(--color-primary) comes from our Tailwind theme in index.css */}
+                            <Bar dataKey="word_count" fill="var(--color-primary)" radius={[0, 4, 4, 0]} barSize={5} />
                         </BarChart>
                     </ResponsiveContainer>
                 </div>
             </Card>
 
             <div className="col-span-12 lg:col-span-9 grid grid-cols-1 md:grid-cols-2 grid-rows-2 gap-4 min-h-0 h-full">
+
+                {/* 2. Engagement Scatter Plot (Submissions vs Time) */}
                 <Card className="p-3 shadow-sm flex flex-col min-h-0">
                     <h3 className="font-bold text-muted-foreground mb-2 text-[10px] uppercase tracking-wider">Engagement</h3>
                     <div className="flex-1">
@@ -76,12 +92,13 @@ export const OverviewCharts = ({
                                     label={{ value: 'Time (min)', angle: -90, position: 'insideLeft', offset: 10, fontSize: 8, fill: 'currentColor', fontWeight: 'bold' }}
                                 />
                                 <Tooltip content={<DashboardTooltip />} />
-                                <Scatter data={engagement_metrics} fill="var(--primary)" />
+                                <Scatter data={engagement_metrics} fill="var(--color-primary)" />
                             </ScatterChart>
                         </ResponsiveContainer>
                     </div>
                 </Card>
 
+                {/* 3. Improvement Scatter Plot (Resubmissions vs Score) */}
                 <Card className="p-3 shadow-sm flex flex-col min-h-0">
                     <h3 className="font-bold text-muted-foreground mb-2 text-[10px] uppercase tracking-wider">Improvement</h3>
                     <div className="flex-1">
@@ -109,12 +126,15 @@ export const OverviewCharts = ({
                                     label={{ value: 'Score (%)', angle: -90, position: 'insideLeft', offset: 10, fontSize: 8, fill: 'currentColor', fontWeight: 'bold' }}
                                 />
                                 <Tooltip content={<DashboardTooltip />} />
-                                <Scatter data={improvement_stats} fill="var(--primary)" />
+                                <Scatter data={improvement_stats} fill="var(--color-primary)" />
                             </ScatterChart>
                         </ResponsiveContainer>
                     </div>
                 </Card>
 
+                {/* 4. Top Error-Prone Questions (Custom Bubble Chart) 
+                    This uses absolute positioning calculated in a hook to create a "pack" layout
+                */}
                 <Card className="p-3 shadow-sm flex flex-col min-h-0 relative overflow-hidden">
                     <h3 className="font-bold text-muted-foreground mb-2 text-[10px] uppercase tracking-wider">Top Error-Prone Questions</h3>
                     <div className="flex-1 relative flex items-start justify-center pt-13">
@@ -134,7 +154,10 @@ export const OverviewCharts = ({
                                         fontSize: q.diameter > 100 ? '10px' : q.diameter > 60 ? '8px' : '7px'
                                     }}
                                 >
+                                    {/* Responsive Label: truncates text if bubble is too small */}
                                     {q.question.length > 20 && q.diameter < 100 ? q.question.substring(0, 15) + '...' : q.question}
+
+                                    {/* Custom Hover Card for Bubbles */}
                                     <Card className="absolute opacity-0 group-hover:opacity-100 transition-opacity bottom-full mb-3 left-1/2 -translate-x-1/2 p-3 border shadow-xl text-[12px] z-[9999] pointer-events-none w-max max-w-[200px]">
                                         <p className="font-bold text-foreground mb-1.5 text-[13px] border-b pb-1 leading-tight">{q.question}</p>
                                         <div className="flex justify-between items-center gap-4">
@@ -149,6 +172,7 @@ export const OverviewCharts = ({
                     </div>
                 </Card>
 
+                {/* 5. Top Error-Prone Words (Treemap) */}
                 <Card className="p-3 shadow-sm flex flex-col min-h-0">
                     <h3 className="font-bold text-muted-foreground mb-2 text-[10px] uppercase tracking-wider">Top Error-Prone Words</h3>
                     <div className="flex-1">
@@ -160,7 +184,8 @@ export const OverviewCharts = ({
                                     const { x, y, width, height, word, fill } = props;
                                     return (
                                         <g>
-                                            <rect x={x} y={y} width={width} height={height} style={{ fill, stroke: 'var(--background)', strokeWidth: 2 }} />
+                                            <rect x={x} y={y} width={width} height={height} style={{ fill, stroke: 'var(--color-background)', strokeWidth: 2 }} />
+                                            {/* Only render text if the rectangle is large enough to contain it */}
                                             {width > 30 && height > 20 && (
                                                 <text x={x + width / 2} y={y + height / 2} textAnchor="middle" dominantBaseline="middle" fill="currentColor" className="text-foreground" fontSize={12} fontWeight="bold">
                                                     {word}
