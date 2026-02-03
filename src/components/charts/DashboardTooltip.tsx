@@ -7,7 +7,10 @@ export const DashboardTooltip = ({ active, payload, title }: any) => {
         const displayTitle = title || payload[0].payload.full_name || payload[0].payload.name || payload[0].payload.word;
 
         return (
-            <Card className="p-0 shadow-xl border-none text-[12px] z-50 min-w-[140px] bg-background/95 backdrop-blur-sm ring-1 ring-border">
+            <Card
+                key={displayTitle}
+                className="p-0 shadow-2xl border-none text-[12px] z-[9999] min-w-[140px] bg-background/95 backdrop-blur-md ring-1 ring-border animate-in fade-in zoom-in duration-300 delay-150 fill-mode-both pointer-events-none"
+            >
                 {displayTitle && (
                     <CardHeader className="p-3 pb-1">
                         <CardTitle className="font-bold text-foreground text-[13px] border-b pb-1">

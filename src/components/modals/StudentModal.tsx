@@ -31,31 +31,6 @@ export const StudentModal = ({
                 <ScrollArea className="max-h-[60vh]">
                     <div className="p-4 space-y-6">
                         <div className="space-y-3">
-                            <h3 className="text-[10px] font-bold text-muted-foreground uppercase tracking-tighter">Active Students</h3>
-                            <div className="grid grid-cols-2 gap-2">
-                                {students.filter(s => s.active).map(student => (
-                                    <Button
-                                        key={student.id}
-                                        variant="outline"
-                                        onClick={() => {
-                                            onSelectStudent(student.full_name);
-                                            onOpenChange(false);
-                                        }}
-                                        className={cn(
-                                            "h-auto justify-start gap-2 p-2 rounded-lg transition-all text-left font-normal",
-                                            selectedStudent === student.full_name
-                                                ? 'bg-primary/10 border-primary/30 text-primary ring-1 ring-primary/20 hover:bg-primary/20'
-                                                : 'bg-background hover:border-primary/30 hover:bg-primary/5 text-foreground'
-                                        )}
-                                    >
-                                        <UserCircle size={14} className={selectedStudent === student.full_name ? 'text-primary' : 'text-muted-foreground'} />
-                                        <span className="text-xs font-semibold">{student.full_name}</span>
-                                    </Button>
-                                ))}
-                            </div>
-                        </div>
-
-                        <div className="space-y-3">
                             <h3 className="text-[10px] font-bold text-muted-foreground uppercase tracking-tighter">Non-Active Students</h3>
                             <div className="grid grid-cols-2 gap-2">
                                 {students.filter(s => !s.active).map(student => (
@@ -74,6 +49,31 @@ export const StudentModal = ({
                                         )}
                                     >
                                         <UserCircle size={14} className="text-muted-foreground" />
+                                        <span className="text-xs font-semibold">{student.full_name}</span>
+                                    </Button>
+                                ))}
+                            </div>
+                        </div>
+
+                        <div className="space-y-3">
+                            <h3 className="text-[10px] font-bold text-muted-foreground uppercase tracking-tighter">Active Students</h3>
+                            <div className="grid grid-cols-2 gap-2">
+                                {students.filter(s => s.active).map(student => (
+                                    <Button
+                                        key={student.id}
+                                        variant="outline"
+                                        onClick={() => {
+                                            onSelectStudent(student.full_name);
+                                            onOpenChange(false);
+                                        }}
+                                        className={cn(
+                                            "h-auto justify-start gap-2 p-2 rounded-lg transition-all text-left font-normal",
+                                            selectedStudent === student.full_name
+                                                ? 'bg-primary/10 border-primary/30 text-primary ring-1 ring-primary/20 hover:bg-primary/20'
+                                                : 'bg-background hover:border-primary/30 hover:bg-primary/5 text-foreground'
+                                        )}
+                                    >
+                                        <UserCircle size={14} className={selectedStudent === student.full_name ? 'text-primary' : 'text-muted-foreground'} />
                                         <span className="text-xs font-semibold">{student.full_name}</span>
                                     </Button>
                                 ))}

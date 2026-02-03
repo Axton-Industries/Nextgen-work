@@ -43,7 +43,7 @@ export const StudentCharts = ({
                         <BarChart data={studentCharts?.time || erik_time_per_assignment} layout="vertical" margin={{ left: 10, right: 0, top: 10, bottom: 10 }} barCategoryGap="65%">
                             <XAxis type="number" tick={{ fontSize: 9, fill: 'currentColor' }} className="text-foreground" axisLine={{ stroke: 'currentColor', opacity: 0.1 }} tickLine={false} label={{ value: 'Minutes', position: 'insideBottom', offset: 0, fontSize: 8, fill: 'currentColor', fontWeight: 'bold' }} />
                             <YAxis dataKey="name" type="category" width={90} tick={{ fontSize: 10, fill: 'currentColor' }} className="text-foreground" axisLine={{ stroke: 'currentColor', opacity: 0.1 }} tickLine={false} />
-                            <Tooltip content={<DashboardTooltip />} />
+                            <Tooltip content={<DashboardTooltip />} allowEscapeViewBox={{ x: false, y: false }} animationDuration={0} />
                             <Legend iconType="circle" wrapperStyle={{ fontSize: '10px', paddingTop: '10px' }} />
 
                             {/* Blue Bar: Student's own time */}
@@ -67,7 +67,7 @@ export const StudentCharts = ({
                                 <CartesianGrid strokeDasharray="3 3" stroke="currentColor" opacity={0.05} />
                                 <XAxis dataKey="week" tick={{ fontSize: 9, fill: 'currentColor' }} className="text-muted-foreground" axisLine={false} tickLine={false} label={{ value: 'Week', position: 'insideBottom', offset: -10, fontSize: 8, fill: 'currentColor', fontWeight: 'bold' }} />
                                 <YAxis tick={{ fontSize: 9, fill: 'currentColor' }} className="text-muted-foreground" axisLine={false} tickLine={false} label={{ value: 'Min', angle: -90, position: 'insideLeft', offset: 12, fontSize: 8, fill: 'currentColor', fontWeight: 'bold' }} />
-                                <Tooltip content={<DashboardTooltip />} />
+                                <Tooltip content={<DashboardTooltip />} allowEscapeViewBox={{ x: false, y: false }} animationDuration={0} />
                                 <Legend verticalAlign="top" align="right" iconType="circle" wrapperStyle={{ fontSize: '9px', paddingBottom: '10px' }} />
 
                                 {/* Solid Line: Student Performance */}
@@ -89,7 +89,7 @@ export const StudentCharts = ({
                                 <CartesianGrid strokeDasharray="3 3" stroke="currentColor" opacity={0.05} />
                                 <XAxis dataKey="week" tick={{ fontSize: 9, fill: 'currentColor' }} className="text-muted-foreground" axisLine={false} tickLine={false} label={{ value: 'Week', position: 'insideBottom', offset: -10, fontSize: 8, fill: 'currentColor', fontWeight: 'bold' }} />
                                 <YAxis tick={{ fontSize: 9, fill: 'currentColor' }} className="text-muted-foreground" axisLine={false} tickLine={false} label={{ value: 'Score %', angle: -90, position: 'insideLeft', offset: 12, fontSize: 8, fill: 'currentColor', fontWeight: 'bold' }} />
-                                <Tooltip content={<DashboardTooltip />} />
+                                <Tooltip content={<DashboardTooltip />} allowEscapeViewBox={{ x: false, y: false }} animationDuration={0} />
                                 <Legend verticalAlign="top" align="right" iconType="circle" wrapperStyle={{ fontSize: '9px', paddingBottom: '10px' }} />
                                 <Line name={displayedStudentName || 'Student'} type="monotone" dataKey="erik" stroke="var(--color-primary)" strokeWidth={3} dot={{ r: 4, fill: 'var(--color-primary)', strokeWidth: 2 }} activeDot={{ r: 6 }} />
                                 <Line name="Class" type="monotone" dataKey="class" stroke="var(--color-muted-foreground)" strokeWidth={2} strokeDasharray="5 5" dot={{ r: 4, fill: 'var(--color-background)', stroke: 'var(--color-muted-foreground)', strokeWidth: 2 }} />
@@ -115,7 +115,7 @@ export const StudentCharts = ({
                                 <Radar name="Class Avg." dataKey="avg" stroke="var(--color-muted-foreground)" fill="var(--color-muted-foreground)" fillOpacity={0.25} />
 
                                 <Legend verticalAlign="top" align="right" wrapperStyle={{ fontSize: '10px', paddingTop: '10px' }} />
-                                <Tooltip content={<DashboardTooltip />} />
+                                <Tooltip content={<DashboardTooltip />} allowEscapeViewBox={{ x: false, y: false }} animationDuration={0} />
                             </RadarChart>
                         </ResponsiveContainer>
                     </div>
@@ -143,7 +143,7 @@ export const StudentCharts = ({
                                     );
                                 }}
                             >
-                                <Tooltip content={<DashboardTooltip />} />
+                                <Tooltip content={<DashboardTooltip />} allowEscapeViewBox={{ x: false, y: false }} animationDuration={0} />
                             </Treemap>
                         </ResponsiveContainer>
                     </div>

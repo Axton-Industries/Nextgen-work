@@ -36,7 +36,7 @@ export const OverviewCharts = ({
                 <h3 className="font-bold text-muted-foreground mb-2 text-[10px] uppercase tracking-wider">Writing Overview</h3>
                 <div className="flex-1 min-h-0 text-[8px]">
                     <ResponsiveContainer width="100%" height="100%">
-                        <BarChart data={writing_overview_rows} layout="vertical" margin={{ left: -10, right: 20, top: 5, bottom: 25 }}>
+                        <BarChart data={writing_overview_rows} layout="vertical" margin={{ left: -25, right: 20, top: 5, bottom: 25 }}>
                             <XAxis
                                 type="number"
                                 tick={{ fontSize: 9, fill: 'currentColor' }}
@@ -48,13 +48,14 @@ export const OverviewCharts = ({
                             <YAxis
                                 dataKey="full_name"
                                 type="category"
-                                width={70}
+                                width={100}
                                 axisLine={false}
                                 tickLine={false}
                                 tick={{ fill: 'currentColor', fontSize: 10, fontWeight: 500 }}
                                 className="text-foreground"
+                                interval={0}
                             />
-                            <Tooltip content={<DashboardTooltip />} cursor={{ fill: 'currentColor', opacity: 0.05 }} />
+                            <Tooltip content={<DashboardTooltip />} cursor={{ fill: 'currentColor', opacity: 0.05 }} allowEscapeViewBox={{ x: false, y: false }} animationDuration={0} />
                             {/* var(--color-primary) comes from our Tailwind theme in index.css */}
                             <Bar dataKey="word_count" fill="var(--color-primary)" radius={[0, 4, 4, 0]} barSize={5} />
                         </BarChart>
@@ -91,7 +92,7 @@ export const OverviewCharts = ({
                                     className="text-muted-foreground"
                                     label={{ value: 'Time (min)', angle: -90, position: 'insideLeft', offset: 10, fontSize: 8, fill: 'currentColor', fontWeight: 'bold' }}
                                 />
-                                <Tooltip content={<DashboardTooltip />} />
+                                <Tooltip content={<DashboardTooltip />} allowEscapeViewBox={{ x: false, y: false }} animationDuration={0} />
                                 <Scatter data={engagement_metrics} fill="var(--color-primary)" />
                             </ScatterChart>
                         </ResponsiveContainer>
@@ -125,7 +126,7 @@ export const OverviewCharts = ({
                                     className="text-muted-foreground"
                                     label={{ value: 'Score (%)', angle: -90, position: 'insideLeft', offset: 10, fontSize: 8, fill: 'currentColor', fontWeight: 'bold' }}
                                 />
-                                <Tooltip content={<DashboardTooltip />} />
+                                <Tooltip content={<DashboardTooltip />} allowEscapeViewBox={{ x: false, y: false }} animationDuration={0} />
                                 <Scatter data={improvement_stats} fill="var(--color-primary)" />
                             </ScatterChart>
                         </ResponsiveContainer>
@@ -135,7 +136,7 @@ export const OverviewCharts = ({
                 {/* 4. Top Error-Prone Questions (Custom Bubble Chart) 
                     This uses absolute positioning calculated in a hook to create a "pack" layout
                 */}
-                <Card className="p-3 shadow-sm flex flex-col min-h-0 relative overflow-hidden">
+                <Card className="p-3 shadow-sm flex flex-col min-h-0 relative">
                     <h3 className="font-bold text-muted-foreground mb-2 text-[10px] uppercase tracking-wider">Top Error-Prone Questions</h3>
                     <div className="flex-1 relative flex items-start justify-center pt-13">
                         <div className="relative w-0 h-0">
@@ -195,7 +196,7 @@ export const OverviewCharts = ({
                                     );
                                 }}
                             >
-                                <Tooltip content={<DashboardTooltip />} />
+                                <Tooltip content={<DashboardTooltip />} allowEscapeViewBox={{ x: false, y: false }} animationDuration={0} />
                             </Treemap>
                         </ResponsiveContainer>
                     </div>
