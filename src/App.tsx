@@ -102,6 +102,7 @@ const App = () => {
           setRangeEnd={timeFilterState.setRangeEnd}
           selectedYear={timeFilterState.selectedYear}
           setSelectedYear={timeFilterState.setSelectedYear}
+          weekOffset={timeFilterState.weekOffset}
           setWeekOffset={timeFilterState.setWeekOffset}
           FILTER_OPTIONS={FILTER_OPTIONS}
           MONTHS={MONTHS}
@@ -117,9 +118,9 @@ const App = () => {
               <StatCard
                 key={idx}
                 {...stat}
-                // If the user clicks the "Total Students" or student name card, open the selector modal
+                // If the user clicks any student-related card, open the selector modal
                 onClick={
-                  (stat.title === "Total Students" || stat.title === "Student Name")
+                  (stat.title === "Total Students" || stat.title === "Student Name" || stat.title === "Active now" || stat.title === "Non active now")
                     ? () => studentState.setIsStudentModalOpen(true)
                     : undefined
                 }

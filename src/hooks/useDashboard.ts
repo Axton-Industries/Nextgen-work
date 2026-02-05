@@ -27,7 +27,7 @@ export const useTimeFilter = () => {
     const [filterMode, setFilterMode] = useState<FilterMode>('presets');
     const [rangeStart, setRangeStart] = useState<DateRange | null>(null);
     const [rangeEnd, setRangeEnd] = useState<DateRange | null>(null);
-    const [selectedYear, setSelectedYear] = useState(2025);
+    const [selectedYear, setSelectedYear] = useState(new Date().getFullYear());
     const [weekOffset, setWeekOffset] = useState(0);
 
     return {

@@ -1,7 +1,6 @@
 export const FILTER_OPTIONS = [
     'Current academic year',
-    'Last 6 months',
-    'Last 3 months',
+    'Current semester',
     'Last month',
     'Last week'
 ];

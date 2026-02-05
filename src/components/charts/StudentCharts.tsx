@@ -102,7 +102,7 @@ export const StudentCharts = ({
                     Visualizes different skill dimensions at once.
                 */}
                 <Card className="p-3 shadow-md flex flex-col min-h-0">
-                    <h3 className="font-bold text-muted-foreground mb-2 text-[10px] uppercase tracking-wider">{displayedStudentName} skills level</h3>
+                    <h3 className="font-bold text-muted-foreground mb-2 text-[10px] uppercase tracking-wider">MAX SKILLS LEVEL</h3>
                     <div className="flex-1">
                         <ResponsiveContainer width="100%" height="100%">
                             <RadarChart cx="50%" cy="50%" outerRadius="100%" data={studentCharts?.skills || erik_skills}>
@@ -132,10 +132,27 @@ export const StudentCharts = ({
                                 content={(props: any) => {
                                     const { x, y, width, height, word, fill } = props;
                                     return (
-                                        <g>
-                                            <rect x={x} y={y} width={width} height={height} style={{ fill, stroke: 'var(--color-background)', strokeWidth: 2 }} />
+                                        <g className="group cursor-pointer">
+                                            <rect
+                                                x={x}
+                                                y={y}
+                                                width={width}
+                                                height={height}
+                                                className="transition-all duration-300 group-hover:brightness-110 group-hover:saturate-150"
+                                                style={{ fill, stroke: 'var(--color-background)', strokeWidth: 2 }}
+                                            />
                                             {width > 30 && height > 20 && (
-                                                <text x={x + width / 2} y={y + height / 2} textAnchor="middle" dominantBaseline="middle" fill="currentColor" className="text-foreground" fontSize={12} fontWeight="bold">
+                                                <text
+                                                    x={x + width / 2}
+                                                    y={y + height / 2}
+                                                    textAnchor="middle"
+                                                    dominantBaseline="middle"
+                                                    fill="currentColor"
+                                                    className="text-foreground transition-transform duration-300 group-hover:scale-110 pointer-events-none"
+                                                    style={{ transformOrigin: `${x + width / 2}px ${y + height / 2}px` }}
+                                                    fontSize={12}
+                                                    fontWeight="bold"
+                                                >
                                                     {word}
                                                 </text>
                                             )}

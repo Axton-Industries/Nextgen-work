@@ -31,7 +31,7 @@ export const StudentModal = ({
                 <ScrollArea className="max-h-[60vh]">
                     <div className="p-4 space-y-6">
                         <div className="space-y-3">
-                            <h3 className="text-[10px] font-bold text-muted-foreground uppercase tracking-tighter">Non-Active Students</h3>
+                            <h3 className="text-[10px] font-bold text-muted-foreground uppercase tracking-tighter">Non active now</h3>
                             <div className="grid grid-cols-2 gap-2">
                                 {students.filter(s => !s.active).map(student => (
                                     <Button
@@ -56,7 +56,7 @@ export const StudentModal = ({
                         </div>
 
                         <div className="space-y-3">
-                            <h3 className="text-[10px] font-bold text-muted-foreground uppercase tracking-tighter">Active Students</h3>
+                            <h3 className="text-[10px] font-bold text-muted-foreground uppercase tracking-tighter">Active now</h3>
                             <div className="grid grid-cols-2 gap-2">
                                 {students.filter(s => s.active).map(student => (
                                     <Button

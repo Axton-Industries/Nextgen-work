@@ -100,16 +100,16 @@ export const top_error_questions: ErrorQuestion[] = [
 ];
 
 export const summary_stats: StatCardData[] = [
-    { title: "Total Students", value: "20", subtext: "18 Active" },
-    { title: "App Time", value: "30min", subtext: "+5%" },
-    { title: "Avg Score", value: "80%", subtext: "+10%" },
-    { title: "Completion", value: "75%", subtext: "-8%" }
+    { title: "Total Students", value: "20", subtext: "18 Active now" },
+    { title: "Avg time spent on the app", value: "30min", subtext: "+5% from last week" },
+    { title: "Avg score in the assignments", value: "80%", subtext: "+10% from last week" },
+    { title: "Avg completion per assignment", value: "75%", subtext: "-8% from last week" }
 ];
 
 // Student Specific Data (Erik)
 export const erik_stats: StatCardData[] = [
     { title: "Student Name", value: "Erik", subtext: "" },
-    { title: "Time spent on the app", value: "20min", subtext: "+5% from last week" },
+    { title: "Avg time spent on the app", value: "20min", subtext: "+5% from last week" },
     { title: "Avg score in the assignments", value: "70%", subtext: "+10% from last week" },
     { title: "Avg completion per assignment", value: "75%", subtext: "-8% from last week" }
 ];
@@ -152,9 +152,7 @@ export const erik_performance_trend: PerformanceTrend[] = [
 ];
 
 export const erik_skills: SkillLevel[] = [
-    { subject: 'Writing', erik: 10, avg: 7 },
-    { subject: 'Expression', erik: 8, avg: 5 },
-    { subject: 'Listening', erik: 6, avg: 8 },
     { subject: 'Reading', erik: 9, avg: 6 },
+    { subject: 'Listening', erik: 6, avg: 8 },
     { subject: 'Vocabulary', erik: 7, avg: 4 },
 ];

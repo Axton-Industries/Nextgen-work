@@ -25,6 +25,7 @@ interface DashboardHeaderProps {
     setRangeEnd: (val: { year: number; month: number } | null) => void;
     selectedYear: number;
     setSelectedYear: (val: number | ((prev: number) => number)) => void;
+    weekOffset: number;
     setWeekOffset: (val: number | ((prev: number) => number)) => void;
     FILTER_OPTIONS: string[];
     MONTHS: string[];
@@ -52,6 +53,7 @@ export const DashboardHeader = ({
     setRangeEnd,
     selectedYear,
     setSelectedYear,
+    weekOffset,
     setWeekOffset,
     FILTER_OPTIONS,
     MONTHS,
@@ -100,6 +102,7 @@ export const DashboardHeader = ({
                         setRangeEnd={setRangeEnd}
                         selectedYear={selectedYear}
                         setSelectedYear={setSelectedYear}
+                        weekOffset={weekOffset}
                         setWeekOffset={setWeekOffset}
                         FILTER_OPTIONS={FILTER_OPTIONS}
                         MONTHS={MONTHS}

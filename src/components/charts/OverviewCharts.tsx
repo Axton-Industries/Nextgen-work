@@ -184,11 +184,32 @@ export const OverviewCharts = ({
                                 content={(props: any) => {
                                     const { x, y, width, height, word, fill } = props;
                                     return (
-                                        <g>
-                                            <rect x={x} y={y} width={width} height={height} style={{ fill, stroke: 'var(--color-background)', strokeWidth: 2 }} />
+                                        <g className="group cursor-pointer">
+                                            <rect
+                                                x={x}
+                                                y={y}
+                                                width={width}
+                                                height={height}
+                                                className="transition-all duration-300 group-hover:brightness-110 group-hover:saturate-150"
+                                                style={{
+                                                    fill,
+                                                    stroke: 'var(--color-background)',
+                                                    strokeWidth: 2
+                                                }}
+                                            />
                                             {/* Only render text if the rectangle is large enough to contain it */}
                                             {width > 30 && height > 20 && (
-                                                <text x={x + width / 2} y={y + height / 2} textAnchor="middle" dominantBaseline="middle" fill="currentColor" className="text-foreground" fontSize={12} fontWeight="bold">
+                                                <text
+                                                    x={x + width / 2}
+                                                    y={y + height / 2}
+                                                    textAnchor="middle"
+                                                    dominantBaseline="middle"
+                                                    fill="currentColor"
+                                                    className="text-foreground transition-transform duration-300 group-hover:scale-110 pointer-events-none"
+                                                    style={{ transformOrigin: `${x + width / 2}px ${y + height / 2}px` }}
+                                                    fontSize={12}
+                                                    fontWeight="bold"
+                                                >
                                                     {word}
                                                 </text>
                                             )}

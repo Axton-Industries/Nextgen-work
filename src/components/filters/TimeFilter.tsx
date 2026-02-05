@@ -1,6 +1,6 @@
 import { Calendar, ChevronLeft, ChevronRight } from 'lucide-react';
 import { Button } from "@/components/ui/button";
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { Popover, PopoverContent, PopoverTrigger, PopoverAnchor } from "@/components/ui/popover";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { FilterButton } from './FilterButton';
 import { cn } from "@/lib/utils";
@@ -18,6 +18,7 @@ interface TimeFilterProps {
     setRangeEnd: (val: { year: number; month: number } | null) => void;
     selectedYear: number;
     setSelectedYear: (val: number | ((prev: number) => number)) => void;
+    weekOffset: number;
     setWeekOffset: (val: number | ((prev: number) => number)) => void;
     FILTER_OPTIONS: string[];
     MONTHS: string[];
@@ -37,6 +38,7 @@ export const TimeFilter = ({
     setRangeEnd,
     selectedYear,
     setSelectedYear,
+    weekOffset,
     setWeekOffset,
     FILTER_OPTIONS,
     MONTHS,
@@ -44,49 +46,53 @@ export const TimeFilter = ({
 }: TimeFilterProps) => {
     return (
         <Popover open={isFilterDropdownOpen} onOpenChange={setIsFilterDropdownOpen}>
-            <PopoverTrigger asChild>
-                <div>
-                    <FilterButton
-                        icon={Calendar}
-                        text={timeFilter}
-                        hasArrow
-                        active={isFilterDropdownOpen}
-                    />
+            <PopoverAnchor asChild>
+                <div className="min-w-[180px] flex justify-start">
+                    <PopoverTrigger asChild>
+                        <div className="cursor-pointer">
+                            <FilterButton
+                                icon={Calendar}
+                                text={timeFilter}
+                                hasArrow
+                                active={isFilterDropdownOpen}
+                            />
+                        </div>
+                    </PopoverTrigger>
                 </div>
-            </PopoverTrigger>
-            <PopoverContent className="w-[320px] p-0 overflow-hidden" align="end">
+            </PopoverAnchor>
+            <PopoverContent className="w-[280px] p-0 overflow-hidden" align="start">
                 <Tabs value={filterMode} onValueChange={(v) => setFilterMode(v as any)} className="flex">
-                    <TabsList className="flex flex-col h-auto w-24 bg-muted rounded-none p-1.5 space-y-1 items-stretch">
+                    <TabsList className="flex flex-col h-auto w-20 bg-muted rounded-none p-1.5 space-y-1 items-stretch border-r">
                         <TabsTrigger
                             value="presets"
-                            className="justify-start px-2 py-1.5 text-[9px] font-black uppercase tracking-tighter transition-all data-[state=active]:bg-background data-[state=active]:text-primary"
+                            className="justify-start px-2 py-1.5 text-[10px] font-black uppercase tracking-tighter transition-all data-[state=active]:bg-background data-[state=active]:text-primary"
                         >
                             Presets
                         </TabsTrigger>
                         <TabsTrigger
                             value="months"
-                            className="justify-start px-2 py-1.5 text-[9px] font-black uppercase tracking-tighter transition-all data-[state=active]:bg-background data-[state=active]:text-primary"
+                            className="justify-start px-2 py-1.5 text-[10px] font-black uppercase tracking-tighter transition-all data-[state=active]:bg-background data-[state=active]:text-primary"
                         >
                             Months
                         </TabsTrigger>
                         <TabsTrigger
                             value="weeks"
-                            className="justify-start px-2 py-1.5 text-[9px] font-black uppercase tracking-tighter transition-all data-[state=active]:bg-background data-[state=active]:text-primary"
+                            className="justify-start px-2 py-1.5 text-[10px] font-black uppercase tracking-tighter transition-all data-[state=active]:bg-background data-[state=active]:text-primary"
                         >
                             Weeks
                         </TabsTrigger>
                     </TabsList>
 
                     <div className="flex-1 overflow-hidden">
-                        <TabsContent value="presets" className="p-3 m-0 bg-background h-[300px] overflow-y-auto custom-scrollbar">
-                            <div className="space-y-0.5">
-                                <p className="text-[9px] font-black text-muted-foreground uppercase tracking-widest mb-2 px-1">Quick Select</p>
+                        <TabsContent value="presets" className="p-2 m-0 bg-background h-[170px] overflow-y-auto custom-scrollbar">
+                            <div className="space-y-0 text-left">
+                                <p className="text-[10px] font-black text-muted-foreground uppercase tracking-widest mb-1.5 px-1">Quick Select</p>
                                 {FILTER_OPTIONS.map(option => (
                                     <Button
                                         key={option}
                                         variant="ghost"
                                         className={cn(
-                                            "w-full justify-between px-2 py-1.5 h-8 text-[10px] font-bold rounded-lg transition-all",
+                                            "w-full justify-between px-2 h-7 text-[11px] font-bold rounded-md transition-all",
                                             timeFilter === option ? "bg-primary/10 text-primary hover:bg-primary/20 hover:text-primary" : "text-muted-foreground hover:bg-muted"
                                         )}
                                         onClick={() => {
@@ -101,10 +107,10 @@ export const TimeFilter = ({
                             </div>
                         </TabsContent>
 
-                        <TabsContent value="months" className="p-3 m-0 bg-background h-[300px] overflow-y-auto custom-scrollbar">
-                            <div className="flex items-center justify-between mb-3 px-1">
-                                <p className="text-[9px] font-black text-muted-foreground uppercase tracking-widest leading-none">
-                                    Academic Year {selectedYear}
+                        <TabsContent value="months" className="p-2 m-0 bg-background h-[170px] overflow-y-auto custom-scrollbar">
+                            <div className="flex items-center justify-between mb-1.5 px-1">
+                                <p className="text-[10px] font-black text-muted-foreground uppercase tracking-widest leading-none">
+                                    Year {selectedYear}
                                 </p>
                                 <div className="flex gap-1">
                                     <Button variant="ghost" size="icon" className="h-5 w-5" onClick={() => setSelectedYear(prev => prev - 1)}>
@@ -139,6 +145,26 @@ export const TimeFilter = ({
                                             variant="ghost"
                                             size="sm"
                                             onClick={() => {
+                                                const isStart = rangeStart?.year === selectedYear && rangeStart.month === idx;
+                                                const isEnd = rangeEnd?.year === selectedYear && rangeEnd.month === idx;
+
+                                                if (isStart || isEnd) {
+                                                    if (isStart && rangeEnd) {
+                                                        const remaining = rangeEnd;
+                                                        setRangeStart(remaining);
+                                                        setRangeEnd(null);
+                                                        setTimeFilter(`${MONTHS[remaining.month]} ${remaining.year}`);
+                                                    } else if (isEnd && rangeStart) {
+                                                        setRangeEnd(null);
+                                                        setTimeFilter(`${MONTHS[rangeStart.month]} ${rangeStart.year}`);
+                                                    } else {
+                                                        setRangeStart(null);
+                                                        setRangeEnd(null);
+                                                        setTimeFilter('Current academic year');
+                                                    }
+                                                    return;
+                                                }
+
                                                 const newPoint = { year: selectedYear, month: idx };
                                                 if (rangeStart === null || rangeEnd !== null) {
                                                     setRangeStart(newPoint);
@@ -157,7 +183,7 @@ export const TimeFilter = ({
                                                 }
                                             }}
                                             className={cn(
-                                                "h-8 px-1 py-2 text-[9px] font-bold rounded-md transition-all border",
+                                                "h-7 px-1 py-1.5 text-[11px] font-bold rounded-md transition-all border",
                                                 isSelected ? "bg-primary border-primary text-primary-foreground z-10 shadow-md hover:bg-primary/90" : inRange ? "bg-primary/10 border-primary/20 text-primary hover:bg-primary/20" : "border-transparent text-muted-foreground hover:bg-muted"
                                             )}
                                         >
@@ -168,30 +194,62 @@ export const TimeFilter = ({
                             </div>
                         </TabsContent>
 
-                        <TabsContent value="weeks" className="p-3 m-0 bg-background h-[300px] overflow-y-auto custom-scrollbar">
-                            <div className="flex items-center justify-between mb-3 px-1">
-                                <p className="text-[9px] font-black text-muted-foreground uppercase tracking-widest leading-none">
-                                    Select Weeks Range
+                        <TabsContent value="weeks" className="p-2 m-0 bg-background h-[170px] overflow-y-auto custom-scrollbar">
+                            <div className="flex items-center justify-between mb-1.5 px-1 pb-1 border-b border-muted/50">
+                                <p className="text-[10px] font-black text-muted-foreground uppercase tracking-widest leading-none">
+                                    Year {selectedYear}
                                 </p>
                                 <div className="flex gap-1">
-                                    <Button variant="ghost" size="icon" className="h-5 w-5" onClick={() => setWeekOffset(prev => Math.max(0, prev - 12))}>
+                                    <Button
+                                        variant="ghost"
+                                        size="icon"
+                                        className="h-5 w-5 hover:scale-110 active:scale-90 transition-all"
+                                        onClick={() => {
+                                            if (weekOffset === 0) {
+                                                setSelectedYear(prev => prev - 1);
+                                                setWeekOffset(48);
+                                            } else {
+                                                setWeekOffset(prev => prev - 12);
+                                            }
+                                        }}
+                                    >
                                         <ChevronLeft size={10} />
                                     </Button>
-                                    <Button variant="ghost" size="icon" className="h-5 w-5" onClick={() => setWeekOffset(prev => prev + 12)}>
+                                    <Button
+                                        variant="ghost"
+                                        size="icon"
+                                        className="h-5 w-5 hover:scale-110 active:scale-90 transition-all"
+                                        onClick={() => {
+                                            if (weekOffset >= 48) {
+                                                setSelectedYear(prev => prev + 1);
+                                                setWeekOffset(0);
+                                            } else {
+                                                setWeekOffset(prev => prev + 12);
+                                            }
+                                        }}
+                                    >
                                         <ChevronRight size={10} />
                                     </Button>
                                 </div>
                             </div>
-                            <div className="grid grid-cols-4 gap-1 px-1">
-                                {CURRENT_WEEKS.map((weekNum) => {
-                                    const isStart = rangeStart?.year === -1 && rangeStart.month === weekNum;
-                                    const isEnd = rangeEnd?.year === -1 && rangeEnd.month === weekNum;
+
+                            <div className="grid grid-cols-4 gap-1 px-1 mt-1.5">
+                                {CURRENT_WEEKS.filter(w => w <= 52).map((weekNum) => {
+                                    const currentPoint = { year: selectedYear, month: weekNum };
+
+                                    const isStart = rangeStart?.year === selectedYear && rangeStart.month === weekNum;
+                                    const isEnd = rangeEnd?.year === selectedYear && rangeEnd.month === weekNum;
+
                                     let inRange = false;
-                                    if (rangeStart?.year === -1 && rangeEnd?.year === -1) {
-                                        const min = Math.min(rangeStart.month, rangeEnd.month);
-                                        const max = Math.max(rangeStart.month, rangeEnd.month);
-                                        inRange = weekNum >= min && weekNum <= max;
+                                    if (rangeStart && rangeEnd) {
+                                        const pVal = selectedYear * 100 + weekNum;
+                                        const startVal = rangeStart.year * 100 + rangeStart.month;
+                                        const endVal = rangeEnd.year * 100 + rangeEnd.month;
+                                        const minVal = Math.min(startVal, endVal);
+                                        const maxVal = Math.max(startVal, endVal);
+                                        inRange = pVal >= minVal && pVal <= maxVal;
                                     }
+
                                     const isSelected = isStart || isEnd;
 
                                     return (
@@ -200,22 +258,48 @@ export const TimeFilter = ({
                                             variant="ghost"
                                             size="sm"
                                             onClick={() => {
-                                                const newPoint = { year: -1, month: weekNum };
-                                                if (rangeStart?.year !== -1 || rangeEnd !== null) {
-                                                    setRangeStart(newPoint);
+                                                const isStart = rangeStart?.year === selectedYear && rangeStart.month === weekNum;
+                                                const isEnd = rangeEnd?.year === selectedYear && rangeEnd.month === weekNum;
+
+                                                if (isStart || isEnd) {
+                                                    if (isStart && rangeEnd) {
+                                                        const remaining = rangeEnd;
+                                                        setRangeStart(remaining);
+                                                        setRangeEnd(null);
+                                                        setTimeFilter(`Week ${remaining.month} ${remaining.year}`);
+                                                    } else if (isEnd && rangeStart) {
+                                                        setRangeEnd(null);
+                                                        setTimeFilter(`Week ${rangeStart.month} ${rangeStart.year}`);
+                                                    } else {
+                                                        setRangeStart(null);
+                                                        setRangeEnd(null);
+                                                        setTimeFilter('Current academic year');
+                                                    }
+                                                    return;
+                                                }
+
+                                                if (!rangeStart || rangeEnd) {
+                                                    // Start new selection
+                                                    setRangeStart(currentPoint);
                                                     setRangeEnd(null);
-                                                    setTimeFilter(`Week ${weekNum}`);
+                                                    setTimeFilter(`Week ${weekNum} ${selectedYear}`);
                                                 } else {
-                                                    setRangeEnd(newPoint);
-                                                    const start = Math.min(rangeStart.month, weekNum);
-                                                    const end = Math.max(rangeStart.month, weekNum);
-                                                    setRangeStart({ year: -1, month: start });
-                                                    setRangeEnd({ year: -1, month: end });
-                                                    setTimeFilter(`W${start} - W${end}`);
+                                                    // Complete the range
+                                                    setRangeEnd(currentPoint);
+
+                                                    // Determine chronological order for the label
+                                                    const startVal = rangeStart.year * 100 + rangeStart.month;
+                                                    const endVal = currentPoint.year * 100 + currentPoint.month;
+
+                                                    if (startVal <= endVal) {
+                                                        setTimeFilter(`W${rangeStart.month} ${rangeStart.year} - W${weekNum} ${selectedYear}`);
+                                                    } else {
+                                                        setTimeFilter(`W${weekNum} ${selectedYear} - W${rangeStart.month} ${rangeStart.year}`);
+                                                    }
                                                 }
                                             }}
                                             className={cn(
-                                                "h-8 px-1 py-2 text-[9px] font-bold rounded-md transition-all border",
+                                                "h-7 px-1 py-1.5 text-[11px] font-bold rounded-md transition-all border",
                                                 isSelected ? "bg-primary border-primary text-primary-foreground z-10 shadow-md hover:bg-primary/90" : inRange ? "bg-primary/10 border-primary/20 text-primary hover:bg-primary/20" : "border-transparent text-muted-foreground hover:bg-muted"
                                             )}
                                         >
