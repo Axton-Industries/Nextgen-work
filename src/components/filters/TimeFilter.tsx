@@ -25,6 +25,32 @@ interface TimeFilterProps {
     CURRENT_WEEKS: number[];
 }
 
+/**
+ * Maps a week number (1-52) to its corresponding month index (0-11)
+ * Follows a standard 4-4-5 accounting calendar pattern for consistency
+ */
+const getMonthIdxFromWeek = (week: number) => {
+    if (week <= 4) return 0;  // Jan
+    if (week <= 8) return 1;  // Feb
+    if (week <= 13) return 2; // Mar (5 weeks)
+    if (week <= 17) return 3; // Apr
+    if (week <= 21) return 4; // May
+    if (week <= 26) return 5; // Jun (5 weeks)
+    if (week <= 30) return 6; // Jul
+    if (week <= 34) return 7; // Aug
+    if (week <= 39) return 8; // Sep (5 weeks)
+    if (week <= 43) return 9; // Oct
+    if (week <= 47) return 10;// Nov
+    return 11;                // Dec (5 weeks)
+};
+
+/**
+ * Checks if a week number (1-52) falls within a specific month index (0-11)
+ */
+const isWeekInMonth = (week: number, monthIdx: number) => {
+    return getMonthIdxFromWeek(week) === monthIdx;
+};
+
 export const TimeFilter = ({
     timeFilter,
     setTimeFilter,
@@ -123,15 +149,29 @@ export const TimeFilter = ({
                             </div>
                             <div className="grid grid-cols-3 gap-1 px-1">
                                 {MONTHS.map((month, idx) => {
-                                    const currentTotal = selectedYear * 12 + idx;
-                                    const startTotal = rangeStart ? rangeStart.year * 12 + rangeStart.month : null;
-                                    const endTotal = rangeEnd ? rangeEnd.year * 12 + rangeEnd.month : null;
+                                    // Detect if the stored range is actually a week-based range
+                                    const isWeekRange = timeFilter.startsWith('W') || timeFilter.includes('Week');
 
-                                    const isStart = rangeStart?.year === selectedYear && rangeStart.month === idx;
-                                    const isEnd = rangeEnd?.year === selectedYear && rangeEnd.month === idx;
+                                    // Interpret the stored 'month' property accordingly
+                                    const startMonthIdx = rangeStart
+                                        ? (isWeekRange ? getMonthIdxFromWeek(rangeStart.month) : rangeStart.month)
+                                        : null;
+                                    const endMonthIdx = rangeEnd
+                                        ? (isWeekRange ? getMonthIdxFromWeek(rangeEnd.month) : rangeEnd.month)
+                                        : null;
+
+                                    const currentTotal = selectedYear * 12 + idx;
+                                    const startTotal = rangeStart !== null && startMonthIdx !== null ? rangeStart.year * 12 + startMonthIdx : null;
+                                    const endTotal = rangeEnd !== null && endMonthIdx !== null ? rangeEnd.year * 12 + endMonthIdx : null;
+
+                                    // Only show highlighting if we have a valid range
+                                    const hasRange = rangeStart !== null;
+
+                                    const isStart = hasRange && rangeStart?.year === selectedYear && startMonthIdx === idx;
+                                    const isEnd = hasRange && rangeEnd?.year === selectedYear && endMonthIdx === idx;
 
                                     let inRange = false;
-                                    if (startTotal !== null && endTotal !== null) {
+                                    if (hasRange && startTotal !== null && endTotal !== null) {
                                         const min = Math.min(startTotal, endTotal);
                                         const max = Math.max(startTotal, endTotal);
                                         inRange = currentTotal >= min && currentTotal <= max;
@@ -237,17 +277,42 @@ export const TimeFilter = ({
                                 {CURRENT_WEEKS.filter(w => w <= 52).map((weekNum) => {
                                     const currentPoint = { year: selectedYear, month: weekNum };
 
-                                    const isStart = rangeStart?.year === selectedYear && rangeStart.month === weekNum;
-                                    const isEnd = rangeEnd?.year === selectedYear && rangeEnd.month === weekNum;
+                                    // Detect if the stored range is month-based
+                                    const isWeekRange = timeFilter.startsWith('W') || timeFilter.includes('Week');
+                                    const isMonthRange = !isWeekRange && rangeStart !== null &&
+                                        (MONTHS.some(m => timeFilter.includes(m)) || timeFilter.includes(' - '));
+
+                                    // Effective comparison points for the UI
+                                    const startWeeks = rangeStart
+                                        ? (isMonthRange ? [rangeStart.month] : [rangeStart.month])
+                                        : [];
+
+                                    // If it's a month selection, a week belongs if it maps to that month
+                                    const isStart = rangeStart?.year === selectedYear && (
+                                        isMonthRange ? isWeekInMonth(weekNum, rangeStart.month) : rangeStart.month === weekNum
+                                    );
+                                    const isEnd = rangeEnd?.year === selectedYear && (
+                                        isMonthRange ? isWeekInMonth(weekNum, rangeEnd.month) : rangeEnd.month === weekNum
+                                    );
 
                                     let inRange = false;
                                     if (rangeStart && rangeEnd) {
                                         const pVal = selectedYear * 100 + weekNum;
-                                        const startVal = rangeStart.year * 100 + rangeStart.month;
-                                        const endVal = rangeEnd.year * 100 + rangeEnd.month;
-                                        const minVal = Math.min(startVal, endVal);
-                                        const maxVal = Math.max(startVal, endVal);
-                                        inRange = pVal >= minVal && pVal <= maxVal;
+
+                                        if (isMonthRange) {
+                                            const startTotal = rangeStart.year * 12 + rangeStart.month;
+                                            const endTotal = rangeEnd.year * 12 + rangeEnd.month;
+                                            const minT = Math.min(startTotal, endTotal);
+                                            const maxT = Math.max(startTotal, endTotal);
+                                            const currentT = selectedYear * 12 + getMonthIdxFromWeek(weekNum);
+                                            inRange = currentT >= minT && currentT <= maxT;
+                                        } else {
+                                            const startVal = rangeStart.year * 100 + rangeStart.month;
+                                            const endVal = rangeEnd.year * 100 + rangeEnd.month;
+                                            const minVal = Math.min(startVal, endVal);
+                                            const maxVal = Math.max(startVal, endVal);
+                                            inRange = pVal >= minVal && pVal <= maxVal;
+                                        }
                                     }
 
                                     const isSelected = isStart || isEnd;

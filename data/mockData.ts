@@ -58,20 +58,30 @@ export const students: Student[] = [
 ];
 
 export const engagement_metrics: EngagementMetric[] = [
-    { id: 1, full_name: 'Julia', submission_count: 3, time_spent_min: 40 },
-    { id: 2, full_name: 'Evelin', submission_count: 8, time_spent_min: 90 },
-    { id: 3, full_name: 'Matis', submission_count: 10, time_spent_min: 20 },
-    { id: 4, full_name: 'Sofia', submission_count: 12, time_spent_min: 95 },
-    { id: 5, full_name: 'Hugo', submission_count: 14, time_spent_min: 150 },
-    { id: 6, full_name: 'Samuel', submission_count: 18, time_spent_min: 180 },
-    { id: 7, full_name: 'Clara', submission_count: 21, time_spent_min: 125 },
-    { id: 8, full_name: 'Irene', submission_count: 21, time_spent_min: 155 },
-    { id: 9, full_name: 'Andrés', submission_count: 25, time_spent_min: 15 },
-    { id: 10, full_name: 'Diego', submission_count: 26, time_spent_min: 190 }
+    { id: 1, full_name: 'Julia', submission_count: 32, time_spent_min: 140 },
+    { id: 2, full_name: 'Evelin', submission_count: 10, time_spent_min: 90 },
+    { id: 3, full_name: 'Matis', submission_count: 14, time_spent_min: 20 },
+    { id: 4, full_name: 'Sofia', submission_count: 15, time_spent_min: 95 },
+    { id: 5, full_name: 'Hugo', submission_count: 12, time_spent_min: 240 },
+    { id: 6, full_name: 'Samuel', submission_count: 22, time_spent_min: 180 },
+    { id: 7, full_name: 'Clara', submission_count: 25, time_spent_min: 125 },
+    { id: 8, full_name: 'Irene', submission_count: 26, time_spent_min: 155 },
+    { id: 9, full_name: 'Andrés', submission_count: 38, time_spent_min: 70 },
+    { id: 10, full_name: 'Diego', submission_count: 42, time_spent_min: 280 },
+    { id: 11, full_name: 'Valeria', submission_count: 4, time_spent_min: 30 },
+    { id: 12, full_name: 'Matías', submission_count: 18, time_spent_min: 85 },
+    { id: 13, full_name: 'Daniel', submission_count: 25, time_spent_min: 140 },
+    { id: 14, full_name: 'Carla', submission_count: 12, time_spent_min: 50 },
+    { id: 15, full_name: 'Lucas', submission_count: 20, time_spent_min: 110 },
+    { id: 16, full_name: 'Martin', submission_count: 28, time_spent_min: 130 },
+    { id: 17, full_name: 'Freya', submission_count: 16, time_spent_min: 75 },
+    { id: 18, full_name: 'Max', submission_count: 23, time_spent_min: 155 },
+    { id: 19, full_name: 'Matis_S', submission_count: 30, time_spent_min: 145 },
+    { id: 20, full_name: 'Erik', submission_count: 25, time_spent_min: 115 }
 ];
 
 export const improvement_stats: ImprovementStat[] = [
-    { id: 101, full_name: 'Valeria', resubmission_avg: 2, score_avg: 20 },
+    { id: 101, full_name: 'Valeria', resubmission_avg: 1, score_avg: 22 },
     { id: 102, full_name: 'Matías', resubmission_avg: 2, score_avg: 25 },
     { id: 103, full_name: 'Daniel', resubmission_avg: 2, score_avg: 100 },
     { id: 104, full_name: 'Carla', resubmission_avg: 3, score_avg: 40 },
@@ -80,7 +90,17 @@ export const improvement_stats: ImprovementStat[] = [
     { id: 107, full_name: 'Freya', resubmission_avg: 8, score_avg: 78 },
     { id: 108, full_name: 'Max', resubmission_avg: 8, score_avg: 88 },
     { id: 109, full_name: 'Matis_S', resubmission_avg: 12, score_avg: 92 },
-    { id: 110, full_name: 'Julia', resubmission_avg: 14, score_avg: 100 }
+    { id: 110, full_name: 'Julia', resubmission_avg: 24, score_avg: 100 },
+    { id: 111, full_name: 'Evelin', resubmission_avg: 4, score_avg: 75 },
+    { id: 112, full_name: 'Matis', resubmission_avg: 6, score_avg: 82 },
+    { id: 113, full_name: 'Sofia', resubmission_avg: 3, score_avg: 90 },
+    { id: 114, full_name: 'Hugo', resubmission_avg: 10, score_avg: 70 },
+    { id: 115, full_name: 'Samuel', resubmission_avg: 10, score_avg: 88 },
+    { id: 116, full_name: 'Clara', resubmission_avg: 5, score_avg: 95 },
+    { id: 117, full_name: 'Irene', resubmission_avg: 7, score_avg: 70 },
+    { id: 118, full_name: 'Andrés', resubmission_avg: 18, score_avg: 98 },
+    { id: 119, full_name: 'Diego', resubmission_avg: 32, score_avg: 94 },
+    { id: 120, full_name: 'Erik', resubmission_avg: 5, score_avg: 85 }
 ];
 
 export const error_analysis_treemap: ErrorAnalysis[] = [
