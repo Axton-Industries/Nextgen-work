@@ -282,11 +282,6 @@ export const TimeFilter = ({
                                     const isMonthRange = !isWeekRange && rangeStart !== null &&
                                         (MONTHS.some(m => timeFilter.includes(m)) || timeFilter.includes(' - '));
 
-                                    // Effective comparison points for the UI
-                                    const startWeeks = rangeStart
-                                        ? (isMonthRange ? [rangeStart.month] : [rangeStart.month])
-                                        : [];
-
                                     // If it's a month selection, a week belongs if it maps to that month
                                     const isStart = rangeStart?.year === selectedYear && (
                                         isMonthRange ? isWeekInMonth(weekNum, rangeStart.month) : rangeStart.month === weekNum
