@@ -1,73 +1,110 @@
-# React + TypeScript + Vite
+# 📊 Nextgen Dashboard
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+[![React](https://img.shields.io/badge/React-19-61DAFB?logo=react&logoColor=white)](https://react.dev/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5.x-3178C6?logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
+[![Vite](https://img.shields.io/badge/Vite-7.x-646CFF?logo=vite&logoColor=white)](https://vitejs.dev/)
+[![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-4.x-06B6D4?logo=tailwind-css&logoColor=white)](https://tailwindcss.com/)
+[![Recharts](https://img.shields.io/badge/Recharts-3.x-22B5BF)](https://recharts.org/)
 
-Currently, two official plugins are available:
+A high-performance, interactive educational analytics dashboard built with **React 19**, **TypeScript**, and **Tailwind CSS**. Designed to provide deep insights into student engagement, performance trends, and learning outcomes through beautiful data visualizations.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+---
 
-## React Compiler
+## ✨ Key Features
 
-The React Compiler is currently not compatible with SWC. See [this issue](https://github.com/vitejs/vite-plugin-react/issues/428) for tracking the progress.
+- **🚀 Two-Tiered Analytics**: 
+  - **Overview Mode**: Class-wide analytics including engagement metrics, improvement stats, and distribution charts.
+  - **Student View**: Individual deep-dives into performance trends, skill mastery, and time management.
+- **📈 Advanced Visualizations**: Leverages **Recharts** for Treemaps, Bubble Charts, Scatter Plots, and multi-axis Line/Bar graphs.
+- **🕒 Dynamic Filtering**: Flexible time-based filtering with support for presets (Week, Month, Year) and custom date ranges.
+- **🎨 Premium UI/UX**: 
+  - Modern Glassmorphic aesthetic with dark-mode optimized colors.
+  - Fully responsive layout for Desktop and Tablets.
+  - Interactive StatCards and custom Dashboard Tooltips for real-time data inspection.
+- **⚡ Performance Optimized**: Built on **Vite** for near-instant HMR and lightning-fast builds.
 
-## Expanding the ESLint configuration
+---
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+## 🛠️ Tech Stack
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+- **Framework**: [React 19](https://react.dev/)
+- **Language**: [TypeScript](https://www.typescriptlang.org/)
+- **Styling**: [Tailwind CSS 4](https://tailwindcss.com/) & [Lucide Icons](https://lucide.dev/)
+- **Components**: [Radix UI](https://www.radix-ui.com/) (Primitives) & [Shadcn/UI](https://ui.shadcn.com/)
+- **Charts**: [Recharts](https://recharts.org/)
+- **Build Tool**: [Vite](https://vitejs.dev/)
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+---
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+## 🚀 Getting Started
+
+### Prerequisites
+
+- [Node.js](https://nodejs.org/) (v18.x or higher recommended)
+- [npm](https://www.npmjs.com/) or [yarn](https://yarnpkg.com/)
+
+### Installation
+
+1. **Clone the repository**
+   ```bash
+   git clone https://github.com/Axton-Industries/Nextgen-work.git
+   cd Nextgen-work
+   ```
+
+2. **Install dependencies**
+   ```bash
+   npm install
+   ```
+
+3. **Start the development server**
+   ```bash
+   npm run dev
+   ```
+
+4. **Build for production**
+   ```bash
+   npm run build
+   ```
+
+---
+
+## 📁 Project Structure
+
+```text
+src/
+├── components/
+│   ├── cards/       # Interactive StatCards and data tiles
+│   ├── charts/      # Recharts implementations (Overview/Student specific)
+│   ├── filters/     # Time and search filter components
+│   ├── layout/      # Sidebar, Header, and Shell containers
+│   ├── ui/          # Low-level accessible components (buttons, dialogs, etc.)
+│   └── modals/      # Student selection and detail modals
+├── hooks/           # Custom React hooks for data processing and state
+├── constants/       # Global configuration and filter options
+├── data/            # Mock data and analytics definitions
+├── lib/             # Utility tool configurations (Tailwind merge, etc.)
+├── types/           # TypeScript interfaces and types
+└── utils/           # Helper functions for data transformation
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+---
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+## 🤝 Contributing
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+Contributions are welcome! If you'd like to improve the dashboard or add new visualizations:
+
+1. Fork the Project
+2. Create your Feature Branch (`git checkout -b feature/AmazingFeature`)
+3. Commit your Changes (`git commit -m 'Add some AmazingFeature'`)
+4. Push to the Branch (`git push origin feature/AmazingFeature`)
+5. Open a Pull Request
+
+---
+
+## 📜 License
+
+Distributed under the MIT License. See `LICENSE` for more information.
+
+---
+
+<p align="center">Built with ❤️ by Axton Industries</p>
