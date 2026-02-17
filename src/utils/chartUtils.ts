@@ -79,3 +79,45 @@ export const layoutBubbles = (questions: ErrorQuestion[]): BubbleData[] => {
 export const generateWeekNumbers = (offset: number, count: number = 12): number[] => {
     return Array.from({ length: count }, (_, i) => i + offset + 1);
 };
+
+/**
+ * Maps a week number (1-52) to its corresponding month index (0-11)
+ * Follows a standard 4-4-5 accounting calendar pattern
+ */
+export const getMonthIdxFromWeek = (week: number) => {
+    if (week <= 4) return 0;  // Jan
+    if (week <= 8) return 1;  // Feb
+    if (week <= 13) return 2; // Mar (5 weeks)
+    if (week <= 17) return 3; // Apr
+    if (week <= 21) return 4; // May
+    if (week <= 26) return 5; // Jun (5 weeks)
+    if (week <= 30) return 6; // Jul
+    if (week <= 34) return 7; // Aug
+    if (week <= 39) return 8; // Sep (5 weeks)
+    if (week <= 43) return 9; // Oct
+    if (week <= 47) return 10;// Nov
+    return 11;                // Dec (5 weeks)
+};
+
+/**
+ * Returns all week numbers that belong to a specific month index
+ */
+export const getWeeksInMonth = (monthIdx: number): number[] => {
+    const weeks: number[] = [];
+    for (let i = 1; i <= 52; i++) {
+        if (getMonthIdxFromWeek(i) === monthIdx) {
+            weeks.push(i);
+        }
+    }
+    return weeks;
+};
+/**
+ * Returns the first and last week numbers for a specific month index
+ */
+export const getWeekBoundariesForMonth = (monthIdx: number): { start: number; end: number } => {
+    const weeks = getWeeksInMonth(monthIdx);
+    return {
+        start: Math.min(...weeks),
+        end: Math.max(...weeks)
+    };
+};

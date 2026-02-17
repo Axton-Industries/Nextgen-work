@@ -8,7 +8,8 @@ import type {
     TimePerAssignment,
     WeekActivity,
     PerformanceTrend,
-    SkillLevel
+    SkillLevel,
+    DateRange
 } from '@/types';
 
 interface UseChartDataProps {
@@ -24,6 +25,9 @@ interface UseChartDataProps {
         performance: PerformanceTrend[];
         skills: SkillLevel[];
     };
+    rangeStart: DateRange | null;
+    rangeEnd: DateRange | null;
+    filterMode: 'presets' | 'months' | 'weeks';
 }
 
 export const useChartData = ({
@@ -33,7 +37,10 @@ export const useChartData = ({
     summaryStats,
     errorAnalysisData,
     topErrorQuestions,
-    baseStudentData
+    baseStudentData,
+    rangeStart,
+    rangeEnd,
+    filterMode
 }: UseChartDataProps) => {
     // Active stats based on view
     const activeStats = useMemo(() => {
@@ -41,11 +48,24 @@ export const useChartData = ({
         return getStudentStats(selectedStudent, timeFilter);
     }, [selectedStudent, timeFilter, summaryStats]);
 
+    // Current weeks for filter
+    const currentWeeks = useMemo(() => {
+        return generateWeekNumbers(weekOffset);
+    }, [weekOffset]);
+
     // Student-specific chart data
     const studentCharts = useMemo(() => {
         if (!selectedStudent) return null;
-        return generateStudentChartData(selectedStudent, timeFilter, baseStudentData);
-    }, [selectedStudent, timeFilter, baseStudentData]);
+        return generateStudentChartData(
+            selectedStudent,
+            timeFilter,
+            baseStudentData,
+            currentWeeks,
+            rangeStart,
+            rangeEnd,
+            filterMode
+        );
+    }, [selectedStudent, timeFilter, baseStudentData, currentWeeks, rangeStart, rangeEnd, filterMode]);
 
     // Error analysis with colors
     const dataWithColors = useMemo(() => {
@@ -56,11 +76,6 @@ export const useChartData = ({
     const layoutBubblesData = useMemo(() => {
         return layoutBubbles(topErrorQuestions);
     }, [topErrorQuestions]);
-
-    // Current weeks for filter
-    const currentWeeks = useMemo(() => {
-        return generateWeekNumbers(weekOffset);
-    }, [weekOffset]);
 
     return {
         activeStats,

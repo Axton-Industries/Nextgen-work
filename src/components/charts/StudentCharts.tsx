@@ -40,7 +40,7 @@ export const StudentCharts = ({
                 <h3 className="font-bold text-muted-foreground mb-2 text-[10px] uppercase tracking-wider">Time spent per assignment</h3>
                 <div className="flex-1 min-h-0">
                     <ResponsiveContainer width="100%" height="100%">
-                        <BarChart data={studentCharts?.time || erik_time_per_assignment} layout="vertical" margin={{ left: 10, right: 0, top: 10, bottom: 10 }} barCategoryGap="65%">
+                        <BarChart data={studentCharts?.time || erik_time_per_assignment} layout="vertical" margin={{ left: 0, right: 20, top: 10, bottom: 10 }} barCategoryGap="65%">
                             <XAxis type="number" tick={{ fontSize: 9, fill: 'currentColor' }} className="text-foreground" axisLine={{ stroke: 'currentColor', opacity: 0.1 }} tickLine={false} label={{ value: 'Minutes', position: 'insideBottom', offset: 0, fontSize: 8, fill: 'currentColor', fontWeight: 'bold' }} />
                             <YAxis dataKey="name" type="category" width={90} tick={{ fontSize: 10, fill: 'currentColor' }} className="text-foreground" axisLine={{ stroke: 'currentColor', opacity: 0.1 }} tickLine={false} />
                             <Tooltip content={<DashboardTooltip />} allowEscapeViewBox={{ x: false, y: false }} animationDuration={0} />
@@ -65,7 +65,21 @@ export const StudentCharts = ({
                         <ResponsiveContainer width="100%" height="100%">
                             <LineChart data={studentCharts?.week || erik_week_activity} margin={{ top: 5, right: 10, bottom: 15, left: 5 }}>
                                 <CartesianGrid strokeDasharray="3 3" stroke="currentColor" opacity={0.05} />
-                                <XAxis dataKey="week" tick={{ fontSize: 9, fill: 'currentColor' }} className="text-muted-foreground" axisLine={false} tickLine={false} label={{ value: 'Week', position: 'insideBottom', offset: -10, fontSize: 8, fill: 'currentColor', fontWeight: 'bold' }} />
+                                <XAxis
+                                    dataKey="week"
+                                    tick={{ fontSize: 9, fill: 'currentColor' }}
+                                    className="text-muted-foreground"
+                                    axisLine={false}
+                                    tickLine={false}
+                                    label={{
+                                        value: typeof (studentCharts?.week?.[0]?.week) === 'string' ? 'Day' : 'Week',
+                                        position: 'insideBottom',
+                                        offset: -10,
+                                        fontSize: 8,
+                                        fill: 'currentColor',
+                                        fontWeight: 'bold'
+                                    }}
+                                />
                                 <YAxis tick={{ fontSize: 9, fill: 'currentColor' }} className="text-muted-foreground" axisLine={false} tickLine={false} label={{ value: 'Min', angle: -90, position: 'insideLeft', offset: 12, fontSize: 8, fill: 'currentColor', fontWeight: 'bold' }} />
                                 <Tooltip content={<DashboardTooltip />} allowEscapeViewBox={{ x: false, y: false }} animationDuration={0} />
                                 <Legend verticalAlign="top" align="right" iconType="circle" wrapperStyle={{ fontSize: '9px', paddingBottom: '10px' }} />
@@ -74,7 +88,7 @@ export const StudentCharts = ({
                                 <Line name={displayedStudentName || 'Student'} type="monotone" dataKey="erik" stroke="var(--color-primary)" strokeWidth={3} dot={{ r: 4, fill: 'var(--color-primary)', strokeWidth: 2 }} activeDot={{ r: 6 }} />
 
                                 {/* Dashed Line: Baseline/Average */}
-                                <Line name="Avg. Minutes" type="monotone" dataKey="avg" stroke="var(--color-muted-foreground)" strokeWidth={2} strokeDasharray="5 5" dot={{ r: 4, fill: 'var(--color-background)', stroke: 'var(--color-muted-foreground)', strokeWidth: 2 }} />
+                                <Line name="Class Avg." type="monotone" dataKey="avg" stroke="var(--color-muted-foreground)" strokeWidth={2} strokeDasharray="5 5" dot={{ r: 4, fill: 'var(--color-background)', stroke: 'var(--color-muted-foreground)', strokeWidth: 2 }} />
                             </LineChart>
                         </ResponsiveContainer>
                     </div>
@@ -87,12 +101,26 @@ export const StudentCharts = ({
                         <ResponsiveContainer width="100%" height="100%">
                             <LineChart data={studentCharts?.performance || erik_performance_trend} margin={{ top: 5, right: 10, bottom: 15, left: 5 }}>
                                 <CartesianGrid strokeDasharray="3 3" stroke="currentColor" opacity={0.05} />
-                                <XAxis dataKey="week" tick={{ fontSize: 9, fill: 'currentColor' }} className="text-muted-foreground" axisLine={false} tickLine={false} label={{ value: 'Week', position: 'insideBottom', offset: -10, fontSize: 8, fill: 'currentColor', fontWeight: 'bold' }} />
+                                <XAxis
+                                    dataKey="week"
+                                    tick={{ fontSize: 9, fill: 'currentColor' }}
+                                    className="text-muted-foreground"
+                                    axisLine={false}
+                                    tickLine={false}
+                                    label={{
+                                        value: typeof (studentCharts?.performance?.[0]?.week) === 'string' ? 'Day' : 'Week',
+                                        position: 'insideBottom',
+                                        offset: -10,
+                                        fontSize: 8,
+                                        fill: 'currentColor',
+                                        fontWeight: 'bold'
+                                    }}
+                                />
                                 <YAxis tick={{ fontSize: 9, fill: 'currentColor' }} className="text-muted-foreground" axisLine={false} tickLine={false} label={{ value: 'Score %', angle: -90, position: 'insideLeft', offset: 12, fontSize: 8, fill: 'currentColor', fontWeight: 'bold' }} />
                                 <Tooltip content={<DashboardTooltip />} allowEscapeViewBox={{ x: false, y: false }} animationDuration={0} />
                                 <Legend verticalAlign="top" align="right" iconType="circle" wrapperStyle={{ fontSize: '9px', paddingBottom: '10px' }} />
                                 <Line name={displayedStudentName || 'Student'} type="monotone" dataKey="erik" stroke="var(--color-primary)" strokeWidth={3} dot={{ r: 4, fill: 'var(--color-primary)', strokeWidth: 2 }} activeDot={{ r: 6 }} />
-                                <Line name="Class" type="monotone" dataKey="class" stroke="var(--color-muted-foreground)" strokeWidth={2} strokeDasharray="5 5" dot={{ r: 4, fill: 'var(--color-background)', stroke: 'var(--color-muted-foreground)', strokeWidth: 2 }} />
+                                <Line name="Class Avg." type="monotone" dataKey="class" stroke="var(--color-muted-foreground)" strokeWidth={2} strokeDasharray="5 5" dot={{ r: 4, fill: 'var(--color-background)', stroke: 'var(--color-muted-foreground)', strokeWidth: 2 }} />
                             </LineChart>
                         </ResponsiveContainer>
                     </div>

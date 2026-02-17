@@ -56,13 +56,13 @@ export interface TimePerAssignment {
 }
 
 export interface WeekActivity {
-    week: number;
+    week: string | number;
     erik: number;
     avg: number;
 }
 
 export interface PerformanceTrend {
-    week: number;
+    week: string | number;
     erik: number;
     class: number;
 }
@@ -90,7 +90,7 @@ export interface StatCardData {
 // Filter Types
 export interface DateRange {
     year: number;
-    month: number;
+    month: number; // 0-11 for months, 1-52 for weeks
 }
 
 export type FilterMode = 'presets' | 'months' | 'weeks';

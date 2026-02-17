@@ -1,3 +1,4 @@
+import { useState, useEffect } from 'react';
 import { Calendar, ChevronLeft, ChevronRight } from 'lucide-react';
 import { Button } from "@/components/ui/button";
 import { Popover, PopoverContent, PopoverTrigger, PopoverAnchor } from "@/components/ui/popover";
@@ -29,20 +30,7 @@ interface TimeFilterProps {
  * Maps a week number (1-52) to its corresponding month index (0-11)
  * Follows a standard 4-4-5 accounting calendar pattern for consistency
  */
-const getMonthIdxFromWeek = (week: number) => {
-    if (week <= 4) return 0;  // Jan
-    if (week <= 8) return 1;  // Feb
-    if (week <= 13) return 2; // Mar (5 weeks)
-    if (week <= 17) return 3; // Apr
-    if (week <= 21) return 4; // May
-    if (week <= 26) return 5; // Jun (5 weeks)
-    if (week <= 30) return 6; // Jul
-    if (week <= 34) return 7; // Aug
-    if (week <= 39) return 8; // Sep (5 weeks)
-    if (week <= 43) return 9; // Oct
-    if (week <= 47) return 10;// Nov
-    return 11;                // Dec (5 weeks)
-};
+import { getMonthIdxFromWeek } from '@/utils/chartUtils';
 
 /**
  * Checks if a week number (1-52) falls within a specific month index (0-11)
@@ -70,6 +58,16 @@ export const TimeFilter = ({
     MONTHS,
     CURRENT_WEEKS
 }: TimeFilterProps) => {
+    // Local state for the UI tab, so switching tabs doesn't immediately change the charts
+    const [localTab, setLocalTab] = useState<'presets' | 'months' | 'weeks'>(filterMode);
+
+    // Sync local tab with global filter mode when the dropdown opens
+    useEffect(() => {
+        if (isFilterDropdownOpen) {
+            setLocalTab(filterMode);
+        }
+    }, [isFilterDropdownOpen, filterMode]);
+
     return (
         <Popover open={isFilterDropdownOpen} onOpenChange={setIsFilterDropdownOpen}>
             <PopoverAnchor asChild>
@@ -87,7 +85,11 @@ export const TimeFilter = ({
                 </div>
             </PopoverAnchor>
             <PopoverContent className="w-[280px] p-0 overflow-hidden" align="start">
-                <Tabs value={filterMode} onValueChange={(v) => setFilterMode(v as any)} className="flex">
+                <Tabs
+                    value={localTab}
+                    onValueChange={(v) => setLocalTab(v as 'presets' | 'months' | 'weeks')}
+                    className="flex"
+                >
                     <TabsList className="flex flex-col h-auto w-20 bg-muted rounded-none p-1.5 space-y-1 items-stretch border-r">
                         <TabsTrigger
                             value="presets"
@@ -122,6 +124,9 @@ export const TimeFilter = ({
                                             timeFilter === option ? "bg-primary/10 text-primary hover:bg-primary/20 hover:text-primary" : "text-muted-foreground hover:bg-muted"
                                         )}
                                         onClick={() => {
+                                            setFilterMode('presets');
+                                            setRangeStart(null);
+                                            setRangeEnd(null);
                                             setTimeFilter(option);
                                             setIsFilterDropdownOpen(false);
                                         }}
@@ -185,8 +190,9 @@ export const TimeFilter = ({
                                             variant="ghost"
                                             size="sm"
                                             onClick={() => {
-                                                const isStart = rangeStart?.year === selectedYear && rangeStart.month === idx;
-                                                const isEnd = rangeEnd?.year === selectedYear && rangeEnd.month === idx;
+                                                setFilterMode('months');
+                                                const isStart = rangeStart?.year === selectedYear && rangeStart.month === idx && filterMode === 'months';
+                                                const isEnd = rangeEnd?.year === selectedYear && rangeEnd.month === idx && filterMode === 'months';
 
                                                 if (isStart || isEnd) {
                                                     if (isStart && rangeEnd) {
@@ -200,13 +206,14 @@ export const TimeFilter = ({
                                                     } else {
                                                         setRangeStart(null);
                                                         setRangeEnd(null);
+                                                        setFilterMode('presets');
                                                         setTimeFilter('Current academic year');
                                                     }
                                                     return;
                                                 }
 
                                                 const newPoint = { year: selectedYear, month: idx };
-                                                if (rangeStart === null || rangeEnd !== null) {
+                                                if (rangeStart === null || rangeEnd !== null || filterMode !== 'months') {
                                                     setRangeStart(newPoint);
                                                     setRangeEnd(null);
                                                     setTimeFilter(`${month} ${selectedYear}`);
@@ -318,8 +325,9 @@ export const TimeFilter = ({
                                             variant="ghost"
                                             size="sm"
                                             onClick={() => {
-                                                const isStart = rangeStart?.year === selectedYear && rangeStart.month === weekNum;
-                                                const isEnd = rangeEnd?.year === selectedYear && rangeEnd.month === weekNum;
+                                                setFilterMode('weeks');
+                                                const isStart = rangeStart?.year === selectedYear && rangeStart.month === weekNum && filterMode === 'weeks';
+                                                const isEnd = rangeEnd?.year === selectedYear && rangeEnd.month === weekNum && filterMode === 'weeks';
 
                                                 if (isStart || isEnd) {
                                                     if (isStart && rangeEnd) {
@@ -333,12 +341,13 @@ export const TimeFilter = ({
                                                     } else {
                                                         setRangeStart(null);
                                                         setRangeEnd(null);
+                                                        setFilterMode('presets');
                                                         setTimeFilter('Current academic year');
                                                     }
                                                     return;
                                                 }
 
-                                                if (!rangeStart || rangeEnd) {
+                                                if (!rangeStart || rangeEnd || filterMode !== 'weeks') {
                                                     // Start new selection
                                                     setRangeStart(currentPoint);
                                                     setRangeEnd(null);

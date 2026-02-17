@@ -65,7 +65,10 @@ const App = () => {
       week: erik_week_activity,
       performance: erik_performance_trend,
       skills: erik_skills
-    }
+    },
+    rangeStart: timeFilterState.rangeStart,
+    rangeEnd: timeFilterState.rangeEnd,
+    filterMode: timeFilterState.filterMode
   });
 
   return (
