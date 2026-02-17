@@ -172,7 +172,7 @@ export const generateStudentChartData = (
                 ...item,
                 erik: Math.max(5, item.erik + (itemSeed % 12) - 6)
             };
-        }),
+        }).sort((a, b) => b.erik - a.erik),
         week: displayedWeeks.map(w => getWeekActivityData(w)),
         performance: displayedWeeks.map(w => getPerformanceData(w)),
         skills: baseData.skills.map((item, idx) => {

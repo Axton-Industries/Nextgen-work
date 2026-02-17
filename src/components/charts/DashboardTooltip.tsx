@@ -4,12 +4,15 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 export const DashboardTooltip = ({ active, payload, title }: any) => {
     if (active && payload && payload.length) {
         // Determine the title: explicitly passed > payload header > first entry name/full_name
-        const displayTitle = title || payload[0].payload.full_name || payload[0].payload.name || payload[0].payload.word;
+        const displayTitle = title || payload[0].payload.full_name || payload[0].payload.name || payload[0].payload.word || payload[0].payload.question;
+
+        // Generate a more unique key by including the X-axis value if available
+        const uniqueKey = `${displayTitle}-${payload[0].payload.week || payload[0].payload.name || payload[0].payload.subject || payload[0].payload.id || ''}`;
 
         return (
             <Card
-                key={displayTitle}
-                className="p-0 shadow-2xl border-none text-[12px] z-[9999] min-w-[140px] bg-background/95 backdrop-blur-md ring-1 ring-border animate-in fade-in zoom-in duration-300 delay-150 fill-mode-both pointer-events-none"
+                key={uniqueKey}
+                className="p-0 shadow-2xl border-none text-[12px] z-[9999] min-w-[140px] bg-background/95 backdrop-blur-md ring-1 ring-border animate-in fade-in zoom-in slide-in-from-bottom-1 duration-300 delay-200 fill-mode-both pointer-events-none"
             >
                 {displayTitle && (
                     <CardHeader className="p-3 pb-1">
