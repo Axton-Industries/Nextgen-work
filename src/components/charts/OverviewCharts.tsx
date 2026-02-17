@@ -2,9 +2,11 @@
  * OverviewCharts Component
  * Displays class-wide metrics including writing volume, engagement levels, 
  * improvement trends, and common errors.
+ * Includes interactive cross-chart highlighting for individual students.
  */
 
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, ScatterChart, Scatter, Treemap } from 'recharts';
+import { useState } from 'react';
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, ScatterChart, Scatter, Treemap, Cell } from 'recharts';
 import { Card } from "@/components/ui/card";
 import { DashboardTooltip } from './DashboardTooltip';
 
@@ -16,6 +18,43 @@ interface OverviewChartsProps {
     dataWithColors: any[]; // Data with pre-assigned colors for the treemap
 }
 
+const STUDENT_COLORS = [
+    '#3b82f6', // blue-500
+    '#10b981', // emerald-500
+    '#f59e0b', // amber-500
+    '#ef4444', // red-500
+    '#8b5cf6', // violet-500
+    '#ec4899', // pink-500
+    '#06b6d4', // cyan-500
+    '#f97316', // orange-500
+    '#84cc16', // lime-500
+    '#14b8a6', // teal-500
+    '#6366f1', // indigo-500
+    '#d946ef', // fuchsia-500
+    '#0ea5e9', // sky-500
+    '#f43f5e', // rose-500
+    '#8b5cf6', // violet-500 (dup check, let's use different)
+    '#64748b', // slate-500
+    '#a855f7', // purple-500
+    '#facc15', // yellow-400
+    '#fb7185', // rose-400
+    '#2dd4bf', // teal-400
+    '#fbbf24', // amber-400
+    '#e879f9', // fuchsia-400
+    '#22c55e', // green-500
+    '#a78bfa', // violet-400
+    '#38bdf8', // sky-400
+    '#4ade80', // green-400
+];
+
+const getStudentColor = (name: string) => {
+    let hash = 0;
+    for (let i = 0; i < name.length; i++) {
+        hash = name.charCodeAt(i) + ((hash << 5) - hash);
+    }
+    return STUDENT_COLORS[Math.abs(hash) % STUDENT_COLORS.length];
+};
+
 export const OverviewCharts = ({
     writing_overview_rows,
     engagement_metrics,
@@ -23,6 +62,55 @@ export const OverviewCharts = ({
     layoutBubbles,
     dataWithColors
 }: OverviewChartsProps) => {
+    const [highlightedStudent, setHighlightedStudent] = useState<string | null>(null);
+
+    // Custom Dot renderer for scatter plots to highlight selected student
+    const renderHighlightDot = (props: any) => {
+        const { cx, cy, payload } = props;
+        const studentColor = getStudentColor(payload.full_name);
+        const isHighlighted = payload.full_name === highlightedStudent;
+
+        if (isHighlighted) {
+            return (
+                <g>
+                    {/* Glowing background ring */}
+                    <circle cx={cx} cy={cy} r={8} fill={studentColor} opacity={0.3} className="animate-pulse" />
+                    {/* Main dot with strong border */}
+                    <circle
+                        cx={cx}
+                        cy={cy}
+                        r={5}
+                        fill={studentColor}
+                        stroke="white"
+                        strokeWidth={2}
+                        className="drop-shadow-md"
+                    />
+                    {/* The "Underline" effect requested by the user */}
+                    <rect
+                        x={cx - 6}
+                        y={cy + 8}
+                        width={12}
+                        height={2}
+                        rx={1}
+                        fill="currentColor"
+                        className="text-foreground animate-in fade-in slide-in-from-top-1 duration-300"
+                    />
+                </g>
+            );
+        }
+
+        return (
+            <circle
+                cx={cx}
+                cy={cy}
+                r={4}
+                fill={studentColor}
+                opacity={highlightedStudent ? 0.2 : 0.8}
+                className="transition-all duration-300"
+            />
+        );
+    };
+
     return (
         /**
          * The Grid:
@@ -57,7 +145,33 @@ export const OverviewCharts = ({
                             />
                             <Tooltip content={<DashboardTooltip />} cursor={{ fill: 'currentColor', opacity: 0.05 }} allowEscapeViewBox={{ x: false, y: false }} animationDuration={0} />
                             {/* var(--color-primary) comes from our Tailwind theme in index.css */}
-                            <Bar dataKey="word_count" fill="var(--color-primary)" radius={[0, 4, 4, 0]} barSize={5} />
+                            <Bar
+                                dataKey="word_count"
+                                fill="var(--color-primary)"
+                                radius={[0, 4, 4, 0]}
+                                barSize={5}
+                                className="cursor-pointer"
+                                onClick={(data: any) => {
+                                    if (data && data.payload && data.payload.full_name) {
+                                        // Still allow clicking to lock/unlock view if desired, but prioritize hover
+                                    }
+                                }}
+                                onMouseEnter={(data: any) => {
+                                    if (data && data.payload && data.payload.full_name) {
+                                        setHighlightedStudent(data.payload.full_name);
+                                    }
+                                }}
+                                onMouseLeave={() => setHighlightedStudent(null)}
+                            >
+                                {writing_overview_rows.map((entry, index) => (
+                                    <Cell
+                                        key={`cell-${index}`}
+                                        fill={getStudentColor(entry.full_name)}
+                                        opacity={highlightedStudent && highlightedStudent !== entry.full_name ? 0.3 : 1}
+                                        className="transition-opacity duration-300"
+                                    />
+                                ))}
+                            </Bar>
                         </BarChart>
                     </ResponsiveContainer>
                 </div>
@@ -93,7 +207,18 @@ export const OverviewCharts = ({
                                     label={{ value: 'Time (min)', angle: -90, position: 'insideLeft', offset: 10, fontSize: 8, fill: 'currentColor', fontWeight: 'bold' }}
                                 />
                                 <Tooltip content={<DashboardTooltip />} allowEscapeViewBox={{ x: false, y: false }} animationDuration={0} />
-                                <Scatter data={engagement_metrics} fill="var(--color-primary)" />
+                                <Scatter
+                                    data={engagement_metrics}
+                                    fill="var(--color-primary)"
+                                    shape={renderHighlightDot}
+                                    className="cursor-pointer"
+                                    onMouseEnter={(data: any) => {
+                                        if (data && data.full_name) {
+                                            setHighlightedStudent(data.full_name);
+                                        }
+                                    }}
+                                    onMouseLeave={() => setHighlightedStudent(null)}
+                                />
                             </ScatterChart>
                         </ResponsiveContainer>
                     </div>
@@ -127,7 +252,18 @@ export const OverviewCharts = ({
                                     label={{ value: 'Score (%)', angle: -90, position: 'insideLeft', offset: 10, fontSize: 8, fill: 'currentColor', fontWeight: 'bold' }}
                                 />
                                 <Tooltip content={<DashboardTooltip />} allowEscapeViewBox={{ x: false, y: false }} animationDuration={0} />
-                                <Scatter data={improvement_stats} fill="var(--color-primary)" />
+                                <Scatter
+                                    data={improvement_stats}
+                                    fill="var(--color-primary)"
+                                    shape={renderHighlightDot}
+                                    className="cursor-pointer"
+                                    onMouseEnter={(data: any) => {
+                                        if (data && data.full_name) {
+                                            setHighlightedStudent(data.full_name);
+                                        }
+                                    }}
+                                    onMouseLeave={() => setHighlightedStudent(null)}
+                                />
                             </ScatterChart>
                         </ResponsiveContainer>
                     </div>
