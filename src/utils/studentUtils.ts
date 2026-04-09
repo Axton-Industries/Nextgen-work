@@ -1,31 +1,45 @@
 import { FILTER_OPTIONS } from '@/constants';
 import { getWeeksInMonth } from '@/utils/chartUtils';
 import type { StatCardData, StudentChartData, TimePerAssignment, WeekActivity, PerformanceTrend, SkillLevel, DateRange, FilterMode } from '@/types';
+import { engagement_metrics, improvement_stats } from '../../data/mockData';
 
 /**
  * Generates student statistics based on name and time filter
  */
 export const getStudentStats = (name: string, timeFilter: string): StatCardData[] => {
+    const studentEngagement = engagement_metrics.find(e => e.full_name === name);
+    const studentImprovement = improvement_stats.find(i => i.full_name === name);
+
     const filterSeed = FILTER_OPTIONS.indexOf(timeFilter as any) !== -1
         ? FILTER_OPTIONS.indexOf(timeFilter as any)
         : timeFilter.length;
-    const seed = name.length + filterSeed;
+
+    const timeRatio = studentEngagement ? (studentEngagement.time_spent_min / 115) : 1;
+    const baseTime = Math.round(20 * timeRatio);
+    const scoreBase = studentImprovement?.score_avg || 65;
+
+    const timeValue = Math.max(1, baseTime + (filterSeed % 5 - 2));
+    const scoreValue = Math.min(100, Math.max(0, scoreBase + (filterSeed % 6 - 3)));
+
+    const complRatio = studentEngagement ? Math.min(1, studentEngagement.submission_count / 25) : 1;
+    const baseCompl = Math.round(75 * complRatio);
+    const complValue = Math.min(100, Math.max(0, baseCompl + (filterSeed % 6 - 3)));
 
     return [
         { title: "Student Name", value: name, subtext: "" },
         {
             title: "Time spent on the app",
-            value: `${15 + (seed % 10)}min`,
+            value: `${timeValue}min`,
             subtext: "+5% from last week"
         },
         {
             title: "Avg score in the assignments",
-            value: `${65 + (seed % 25)}%`,
+            value: `${scoreValue}%`,
             subtext: "+10% from last week"
         },
         {
             title: "Avg completion per assignment",
-            value: `${70 + (seed % 15)}%`,
+            value: `${complValue}%`,
             subtext: "-8% from last week"
         }
     ];
@@ -125,6 +139,13 @@ export const generateStudentChartData = (
         return (seed + weekVal * 7 + wObj.year) % 100;
     };
 
+    const studentEngagement = engagement_metrics.find(e => e.full_name === studentName);
+    const studentImprovement = improvement_stats.find(i => i.full_name === studentName);
+
+    const scoreBase = studentImprovement?.score_avg || 65;
+    const activityBase = studentEngagement ? (studentEngagement.submission_count / 2) : 10;
+    const timeRatio = studentEngagement ? (studentEngagement.time_spent_min / 115) : 1;
+
     const getWeekActivityData = (wObj: { year: number, week: string | number }) => {
         const wSeed = getWeekSeed(wObj);
         const baseItem = typeof wObj.week === 'number'
@@ -134,13 +155,13 @@ export const generateStudentChartData = (
         if (baseItem) {
             return {
                 ...baseItem,
-                erik: Math.max(2, baseItem.erik + (wSeed % 10) - 5),
-                avg: Math.max(5, baseItem.avg + (wSeed % 6) - 3)
+                erik: Math.max(0, Math.round(activityBase + (wSeed % 6) - 3)),
+                avg: Math.max(2, baseItem.avg + (wSeed % 6) - 3)
             };
         }
         return {
             week: wObj.week,
-            erik: 5 + (wSeed % 20),
+            erik: Math.max(0, Math.round(activityBase + (wSeed % 6) - 3)),
             avg: 10 + (wSeed % 15)
         };
     };
@@ -154,13 +175,13 @@ export const generateStudentChartData = (
         if (baseItem) {
             return {
                 ...baseItem,
-                erik: Math.min(100, Math.max(30, baseItem.erik + (wSeed % 30) - 15)),
+                erik: Math.min(100, Math.max(0, scoreBase + (wSeed % 20) - 10)),
                 class: Math.min(95, Math.max(40, baseItem.class + (wSeed % 20) - 10))
             };
         }
         return {
             week: wObj.week,
-            erik: 60 + (wSeed % 35),
+            erik: Math.min(100, Math.max(0, scoreBase + (wSeed % 20) - 10)),
             class: 65 + (wSeed % 25)
         };
     };
@@ -170,16 +191,17 @@ export const generateStudentChartData = (
             const itemSeed = (seed + idx * 13) % 100;
             return {
                 ...item,
-                erik: Math.max(5, item.erik + (itemSeed % 12) - 6)
+                erik: Math.max(1, Math.round(item.erik * timeRatio + (itemSeed % 10) - 5))
             };
         }).sort((a, b) => b.erik - a.erik),
         week: displayedWeeks.map(w => getWeekActivityData(w)),
         performance: displayedWeeks.map(w => getPerformanceData(w)),
         skills: baseData.skills.map((item, idx) => {
             const itemSeed = (seed + idx * 17) % 50;
+            const skillBase = scoreBase / 10;
             return {
                 ...item,
-                erik: Math.min(10, Math.max(2, item.erik + (itemSeed % 4) - 2))
+                erik: Math.min(10, Math.max(1, Math.round(skillBase + (itemSeed % 4) - 2)))
             };
         })
     };
